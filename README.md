@@ -1,1 +1,1 @@
-# ssw555
+# SSW 555 - GEDCOM Project
