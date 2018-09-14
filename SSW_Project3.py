@@ -70,23 +70,20 @@ for line in gedcomFile:
                     print(str(elem), end=" ")
             elif currLine[2] in exceptions:
                 if str(GEDCOMdict[currLine[2]]) == currLine[0]:
-                    print(saveLines)
-                    
                     checkKeys = set();
-                    for item in currLine:
-                        if item in GEDCOMdict.keys():
+                    
+                    for item in saveLines:
+                        print(item)
+                        print(item[0])
+                        if item[0] in GEDCOMdict.keys():
                             checkKeys.add(item)
                     missingKeys = dictSet - checkKeys
                     if len(missingKeys) != 0:
                          for item in missingKeys:
-                             currLine.append([item])
-                             currLine.append(['N/A'])
+                             saveLines.append([item])
+                             saveLines.append(['N/A'])
                         
                     saveAll.append(saveLines)
-                    #if saveLines[0][0] == 'FAM':
-                    #    x.add_row(saveLines)
-                    #else:
-                    #    y.add_row(saveLines)
                     saveLines.clear()
                     print(currLine[2]+"|Y|"+currLine[1], end="")
                     saveLines.append([currLine[2]])
