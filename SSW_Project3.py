@@ -2,13 +2,15 @@
 # Project 2 SSW 555
 # I pledge my honor that I have abided by the Stevens Honor System
 
-from prettytable import PrettyTable
+#from prettytable import PrettyTable
 
-x = PrettyTable()
-x.field_names = ["ID", "Name", "Gender", "Birthday", "Age", "Alive", "Dead", "Child", "Spouse"]
+#x = PrettyTable()
+#9
+#x.field_names = ["ID", "Name", "Gender", "Birthday", "Age", "Alive", "Dead", "Child", "Spouse"]
 
-y = PrettyTable()
-y = ["ID", "Married", "Divorced", "Husband ID", "Husband Name", "Wife ID", "Wife Name", "Children"]
+#y = PrettyTable()
+#8
+#y.field_names = ["ID", "Married", "Divorced", "Husband ID", "Husband Name", "Wife ID", "Wife Name", "Children"]
 
 GEDCOMdict = {
     'INDI': 0,
@@ -36,6 +38,8 @@ currLine = [];
 
 saveLines = [];
 saveAll = [];
+
+dictSet = set(GEDCOMdict.keys());
 
 currINDI = False
 
@@ -67,11 +71,22 @@ for line in gedcomFile:
             elif currLine[2] in exceptions:
                 if str(GEDCOMdict[currLine[2]]) == currLine[0]:
                     print(saveLines)
+                    
+                    checkKeys = set();
+                    for item in currLine:
+                        if item in GEDCOMdict.keys():
+                            checkKeys.add(item)
+                    missingKeys = dictSet - checkKeys
+                    if len(missingKeys) != 0:
+                         for item in missingKeys:
+                             currLine.append([item])
+                             currLine.append(['N/A'])
+                        
                     saveAll.append(saveLines)
-                    if saveLines[0][0] == 'FAM':
-                        x.add_row(saveLines)
-                    else:
-                        y.add_row(saveLines)
+                    #if saveLines[0][0] == 'FAM':
+                    #    x.add_row(saveLines)
+                    #else:
+                    #    y.add_row(saveLines)
                     saveLines.clear()
                     print(currLine[2]+"|Y|"+currLine[1], end="")
                     saveLines.append([currLine[2]])
@@ -100,4 +115,3 @@ for line in gedcomFile:
 saveAll.append(saveLines)       
 print(saveAll)
 
-x.add_row(["Adelaide", 1295, 1158259, 600.5])
