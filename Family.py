@@ -17,7 +17,23 @@ class Family():
             self.children = children
         else:
             self.children = []
+        
+        self.validate()
     
+    def validate(self):
+        self._check_dates()
+
+    def _check_dates(self):
+        # Marriage before death
+        if self.husband is not None and self.wife is not None:
+            if not self.husband.alive:
+                if self.husband.death < self.married_date:
+                    raise ValueError("Married date %s cannot be after husband death date %s" % (self.married_date.strftime('%Y-%m-%d'), self.husband.death.stftime('%Y-%m-%d'))
+            if not self.wife.alive:
+                if self.wife.death < self.married_date:
+                    raise ValueError("Married date %s cannot be after wife death date %s" % (self.married_date.strftime('%Y-%m-%d'), self.wife.death.stftime('%Y-%m-%d'))
+                
+                    
     @staticmethod
     def instance_from_dict(fam_dict):
         id = fam_dict['FAM']
@@ -44,7 +60,7 @@ class Family():
     def to_row(self):
         ret = []
         ret.append(self.id)
-        ret.append(self.married_date.strftime('%Y-%m-%d'))
+        ret.append('NA' if self.married_date is None else self.married_date.strftime('%Y-%m-%d'))
 
         ret.append('NA' if self.div_date is None else self.div_date.strftime('%Y-%m-%d'))
 
