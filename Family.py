@@ -28,10 +28,10 @@ class Family():
         if self.husband is not None and self.wife is not None:
             if not self.husband.alive:
                 if self.husband.death < self.married_date:
-                    raise ValueError("Married date %s cannot be after husband death date %s" % (self.married_date.strftime('%Y-%m-%d'), self.husband.death.stftime('%Y-%m-%d'))
+                    raise ValueError("Married date %s cannot be after husband death date %s" % (self.married_date.strftime('%Y-%m-%d'), self.husband.death.stftime('%Y-%m-%d')))
             if not self.wife.alive:
                 if self.wife.death < self.married_date:
-                    raise ValueError("Married date %s cannot be after wife death date %s" % (self.married_date.strftime('%Y-%m-%d'), self.wife.death.stftime('%Y-%m-%d'))
+                    raise ValueError("Married date %s cannot be after wife death date %s" % (self.married_date.strftime('%Y-%m-%d'), self.wife.death.stftime('%Y-%m-%d')))
                 
                     
     @staticmethod
