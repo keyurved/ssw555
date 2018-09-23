@@ -27,6 +27,9 @@ class Individual():
         else:
             self.spouses = spouses
 
+    def validate(self):
+        self._check_dates()
+
     def _check_dates(self):
         #Birth before death
         if self.death is not None and self.death < self.bday:
