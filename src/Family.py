@@ -24,6 +24,10 @@ class Family():
         self._check_dates()
 
     def _check_dates(self):
+        # Marriage before divorce
+        if self.husband is not None and self.wife is not None:
+            if self.div_date is not None and self.div_date < self.married_date:
+                raise ValueError("Married date %s cannot be after the divorce date %s" % (self.married_date.strftime('%Y-%m-%d'), self.div_date.strftime('%Y-%m-%d')))
         # Marriage before death
         if self.husband is not None and self.wife is not None:
             if not self.husband.alive:

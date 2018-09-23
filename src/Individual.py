@@ -26,6 +26,11 @@ class Individual():
             self.spouses = []
         else:
             self.spouses = spouses
+
+    def _check_dates(self):
+        #Birth before death
+        if self.death is not None and self.death < self.bday:
+            raise ValueError("Death date %s cannot be after the birth date %s" %(self.death.strftime('%Y-%m-%d'), self.bday.strftime('%Y-%m-%d')))
     
     @staticmethod
     def instance_from_dict(info_dict):
