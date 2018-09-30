@@ -5,11 +5,11 @@ from prettytable import PrettyTable
 
 """project2.py SSW 555-WS Project 2 GEDCOM validator"""
 
-__author__ = "Keyur Ved, Monica Razak, Jacob Ciesieleski"
+__author__ = "Keyur Ved, Monica Razak, Jacob Ciesieleski, Bora Bibe"
 
 import sys 
 
-valid_tags = { 0: ["INDI", "FAM", "HEAD", "RLR", "NOTE"],
+valid_tags = { 0: ["INDI", "FAM", "HEAD", "RLR", "NOTE", "TRLR"],
                1: ["NAME", "SEX", "BIRT", "DEAT", "FAMC", "FAMS", "MARR", "HUSB", "WIFE", "CHIL", "DIV"],
                2: ["DATE"]
             }
@@ -118,12 +118,14 @@ def run():
     
     for indiv in indivs:
         indiv_table.add_row(indiv.to_row())
+        indiv.print_errors()
 
     fam_table = PrettyTable()
     fam_table.field_names = Family.row_headers
 
     for fam in fams:
         fam_table.add_row(fam.to_row())
+        fam.print_errors()
 
     print(indiv_table)
     print(fam_table)
