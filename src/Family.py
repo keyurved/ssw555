@@ -3,8 +3,8 @@ import datetime
 
 class Family():
     row_headers = [
-                    "ID", "Married", "Divorced", "Husband ID", "Husband Name", "Wife ID",
-                    "Wife Name", "Children"
+                    "ID", "Married", "Divorced", "Husband ID", "Husband Name",
+                    "Wife ID", "Wife Name", "Children"
     ]
     error_header = "ERROR: FAMILY:"
 
