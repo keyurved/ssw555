@@ -26,6 +26,10 @@ class Individual():
             self.spouses = []
         else:
             self.spouses = spouses
+        self.validate()
+
+    def validate(self):
+        self._check_dates()
   
     
     def _check_dates(self):

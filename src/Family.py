@@ -26,7 +26,6 @@ class Family():
 
     def _check_dates(self):
         now = datetime.datetime.now()
-        
         # Marriage before death
         if self.husband is not None and self.wife is not None:
             if not self.husband.alive:
