@@ -1,10 +1,13 @@
+import sys
 import datetime
 
 class Individual():
     row_headers = [
-                    "ID", "Name", "Gender", "Birthday", "Age", "Alive", "Death", "Children",
-                    "Spouse"
+            "ID", "Name", "Gender", "Birthday", "Age", "Alive", "Death",
+            "Children", "Spouse"
     ]
+
+    error_header = "ERROR: INDIVIDUAL:"
 
     def __init__(self, id, name, gender, bday, age, familes, alive, death=None, children=None, spouses=None):
         if '@' in id:
@@ -26,31 +29,41 @@ class Individual():
             self.spouses = []
         else:
             self.spouses = spouses
+        self.errors = []
         self.validate()
 
     def validate(self):
         self._check_dates()
-  
-    
+
+
+    def _add_error(self, story, error):
+        self.errors.append("%s %s: %s: %s" % 
+                (Individual.error_header, story, self.id, error))
+
     def _check_dates(self):
         now = datetime.datetime.now()
-        
+
         # Birth and death dates before current date
-        if self.alive:
-            if self.bday > now:
-                raise ValueError("Birth date %s cannot be after the current date %s" % (self.alive.strftime('%Y-%m-%d'), now.strftime('%Y-%m-%d %H:%M')))
+        if self.bday > now:
+            self._add_error("US01", "Birthday %s occurs in the future" % (self.bday.strftime('%Y-%m-%d')))
         if self.death is not None:
             if self.death > now:
-                raise ValueError("Death date %s cannot be after the current date %s" % (self.death.strftime('%Y-%m-%d'), now.strftime('%Y-%m-%d %H:%M')))
-                    
-                                                      
-                        
+                self._add_error("US01", "Death %s occurs in the future" % (self.death.strftime('%Y-%m-%d')))
+            if self.death < self.bday:
+                self._add_error("US03", "Died %s before born %s" % (self.death.strftime('%Y-%m-%d'), self.bday.strftime('%Y-%m-%d')))
+        
+
+
+    def print_errors(self):
+        for i in self.errors:
+            print(i, file=sys.stderr)
+
     @staticmethod
     def instance_from_dict(info_dict):
         id = info_dict['INDI']
         name = info_dict['NAME']
         gender = info_dict['SEX']
-        bday = datetime.datetime.strptime(info_dict['BIRT'], '%d %b %Y').date()
+        bday = datetime.datetime.strptime(info_dict['BIRT'], '%d %b %Y')
         today = datetime.datetime.today()
         age = today.year - bday.year - ((today.month, today.day) < (bday.month, bday.day))
         families = info_dict['FAM']
@@ -59,9 +72,7 @@ class Individual():
 
         if 'DEAT' in info_dict.keys():
             alive = False
-            death = datetime.datetime.strptime(info_dict['DEAT'], '%d %b %Y').date()
-
-        
+            death = datetime.datetime.strptime(info_dict['DEAT'], '%d %b %Y')
         return Individual(id, name, gender, bday, age, families, alive, death=death)
 
     def add_child(self, child):
@@ -73,7 +84,6 @@ class Individual():
     def set_spouse(self, spouse):
         if spouse not in self.spouses:
             self.spouses.append(spouse)
-            
 
     def to_row(self):
         ret = []
@@ -87,17 +97,16 @@ class Individual():
         ret.append('True' if self.alive else 'False')
 
         ret.append('NA' if self.alive else self.death.strftime('%Y-%m-%d'))
-        
+
         if len(self.children) > 0:
             ret.append("{%s}" % ','.join(list(map(lambda x: x.id, self.children))))
         else:
             ret.append('NA')
-        
+
         if len(self.spouses) > 0:
             ret.append("{%s}" % ','.join(list(map(lambda x: x.id, self.spouses))))
         else:
             ret.append('NA')
-
         return ret
 
     def __str__(self):
