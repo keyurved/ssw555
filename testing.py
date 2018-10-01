@@ -9,23 +9,19 @@ def US07(birth, death):
     Returns:
         True/False: True if the person has been alive for more than 150 years, otherwise False.
     '''
-    if birth == '' or birth == 'N/A' or birth == 'Unknown':
+    if birth is None:
         return False
-    if death == '' or death == 'N/A' or death == 'Unknown':
+    if death is None:
         return False
-    date_int = { "JAN": 1, "FEB": 2, "MAR": 3, "APR": 4, "MAY": 5, "JUN": 6, "JUL": 7, "AUG": 8, "SEP": 9, "OCT": 10, "NOV": 11, "DEC": 12 }
-    birth = birth.split('-')
-    death = death.split('-')
 
-    if eval(death[2]) - eval(birth[2]) > 150:
-        return True
-    elif eval(death[2]) - eval(birth[2]) == 150:
-        if date_int[death[1]] > date_int[birth[1]]:
-            return True
-        elif date_int[death[1]] == date_int[birth[1]]:
-            if death[0] > birth[0]:
-                return True
-    return False
+    this_year_birthday = datetime.date(death.year, birth.month, birth.day)
+    if this_year_birthday < today:
+        years = death.year - birth.year
+    else:
+        years = death.year - birth.year - 1
+    if years > 150:
+        return False
+    return True
 
 def US08(birth, marriage):
     '''
