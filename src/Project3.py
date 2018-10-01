@@ -126,6 +126,7 @@ def run():
     for fam in fams:
         fam_table.add_row(fam.to_row())
         fam.print_errors()
+        fam.print_anomalies()
 
     print(indiv_table)
     print(fam_table)
