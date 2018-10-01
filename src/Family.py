@@ -7,6 +7,7 @@ class Family():
                     "Wife ID", "Wife Name", "Children"
     ]
     error_header = "ERROR: FAMILY:"
+    anomaly_header = "ANOMALY: FAMILY"
 
     def __init__(self, id, husband, wife, married_date, div_date=None, children=None):
         id.replace('@', '')
@@ -20,6 +21,7 @@ class Family():
         else:
             self.children = []
         self.errors = []
+        self.anomalies = []
         
         self.validate()
     
@@ -29,6 +31,10 @@ class Family():
     def _add_error(self, story, error):
         self.errors.append("%s %s: %s: %s" % 
                 (Family.error_header, story, self.id, error))
+
+    def _add_anomaly(self, story, anomaly):
+        self.anomalies.append("%s %s: %s: %s" %
+                (Family.anomaly_header, story, self.id, anomaly))
 
     def _check_dates(self):
         now = datetime.datetime.now()
@@ -53,6 +59,9 @@ class Family():
                 # Marriage before death - wife
                 if not self.wife.alive and self.wife.death < self.married_date:
                     self._add_error("US05", "Married %s after wife's (%s) death on %s" % (self.married_date.strftime('%Y-%m-%d'), self.wife.id, self.wife.death.strftime('%Y-%m-%d')))
+                for child in self.children:
+                    if child.bday < self.married_date:
+                        self._add_anomaly("US08", "Child %s born %s before marriage on %s" % (child.id, child.bday.strftime("%Y-%m-%d"), self.married_date.strftime("%Y-%m-%d")))
                     
             # Validate divorce date
             if self.div_date is not None:
@@ -69,6 +78,7 @@ class Family():
                 # Divorce before marriage
                 if self.married_date is not None and self.div_date < self.married_date:
                     self._add_error("US04", "Divorced %s before married %s" % (self.div_date.strftime('%Y-%m-%d'), self.married_date.strftime('%Y-%m-%d')))
+            
                     
     @staticmethod
     def instance_from_dict(fam_dict):
@@ -92,6 +102,10 @@ class Family():
             div_date = datetime.datetime.strptime(fam_dict["DIV"], '%d %b %Y')
 
         return Family(id, husband, wife, married_date, div_date=div_date, children=children)
+
+    def print_anomalies(self):
+        for i in self.anomalies:
+            print(i, file=sys.stderr)
 
     def print_errors(self):
         for i in self.errors:
