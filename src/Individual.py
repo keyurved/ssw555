@@ -44,16 +44,18 @@ class Individual():
         now = datetime.datetime.now()
 
         # Birth and death dates before current date
-        if self.bday > now:
+        if self.bday is not None and self.bday > now:
             self._add_error("US01", "Birthday %s occurs in the future" % (self.bday.strftime('%Y-%m-%d')))
-        if self.death is not None:
+        elif self.death is not None:
             if self.death > now:
                 self._add_error("US01", "Death %s occurs in the future" % (self.death.strftime('%Y-%m-%d')))
+            # Death before birth
             if self.death < self.bday:
                 self._add_error("US03", "Died %s before born %s" % (self.death.strftime('%Y-%m-%d'), self.bday.strftime('%Y-%m-%d')))
-
+            # Died over 150 years old
             if abs(self.death.year - self.bday.year) > 150:
                 self._add_error("US07", "More than 150 years old at death - Birth %s: Death %s" % (self.bday.strftime("%Y-%m-%d"), self.death.strftime("%Y-%m-%d")))
+        # Over 150 and still alive        
         elif abs(now.year - self.bday.year) > 150:
             self._add_error("US07", "More than 150 years old - Birth %s" % (self.bday.strftime("%Y-%m-%d")))
 
