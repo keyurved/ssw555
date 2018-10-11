@@ -1,6 +1,6 @@
 #!/usr/bin/env python
-from Individual import Individual
 from Family import Family
+from Individual import Individual
 from prettytable import PrettyTable
 
 """project2.py SSW 555-WS Project 2 GEDCOM validator"""
