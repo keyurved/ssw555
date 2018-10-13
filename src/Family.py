@@ -35,6 +35,7 @@ class Family():
     def _add_anomaly(self, story, anomaly):
         self.anomalies.append("%s %s: %s: %s" %
                 (Family.anomaly_header, story, self.id, anomaly))
+                
 
     def _check_dates(self):
         now = datetime.datetime.now()
@@ -61,9 +62,9 @@ class Family():
                     self._add_error("US05", "Married %s after wife's (%s) death on %s" % (self.married_date.strftime('%Y-%m-%d'), self.wife.id, self.wife.death.strftime('%Y-%m-%d')))
                 
                 # Marriage under 14 years old
-                if abs(self.married_date.year - self.husband.bday.year) < 14:
+                if self.married_date.year - self.husband.bday.year < 14:
                     self._add_error("US10", "Under 14 at time of marriage - Birth %s: Marriage %s" % (self.husband.bday.strftime("%Y-%m-%d"), self.married_date.strftime("%Y-%m-%d")))
-                if abs(self.married_date.year - self.wife.bday.year) < 14:
+                if self.married_date.year - self.wife.bday.year < 14:
                     self._add_error("US10", "Under 14 at time of marriage - Birth %s: Marriage %s" % (self.wife.bday.strftime("%Y-%m-%d"), self.married_date.strftime("%Y-%m-%d")))
                     
                 for child in self.children:
@@ -72,9 +73,9 @@ class Family():
                         self._add_anomaly("US08", "Child %s born %s before marriage on %s" % (child.id, child.bday.strftime("%Y-%m-%d"), self.married_date.strftime("%Y-%m-%d")))
                 # Validate child birth is before parents death
                     if not self.wife.alive and not self.husband.alive:    
-                        if child.bday > self.husband.death:
+                        if child.bday > self.wife.death:
                             self._add_error("US09", "Child %s born on %s after father's death on %s" % (child.id, child.bday.strftime('%Y-&m-%d'), self.husband.death.strftime('%Y-&m-%d')))
-                        if child.bday > self.mother.death:
+                        if child.bday > self.husband.death:
                             self._add_error("US09", "Child %s born on %s after mother's death on %s" % (child.id, child.bday.strftime('%Y-&m-%d'), self.wife.death.strftime('%Y-&m-%d')))
                         
                         
