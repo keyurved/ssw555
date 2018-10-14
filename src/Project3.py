@@ -1,15 +1,15 @@
 #!/usr/bin/env python
-from Individual import Individual
 from Family import Family
+from Individual import Individual
 from prettytable import PrettyTable
 
 """project2.py SSW 555-WS Project 2 GEDCOM validator"""
 
-__author__ = "Keyur Ved, Monica Razak, Jacob Ciesieleski"
+__author__ = "Keyur Ved, Monica Razak, Jacob Ciesieleski, Bora Bibe"
 
 import sys 
 
-valid_tags = { 0: ["INDI", "FAM", "HEAD", "RLR", "NOTE"],
+valid_tags = { 0: ["INDI", "FAM", "HEAD", "RLR", "NOTE", "TRLR"],
                1: ["NAME", "SEX", "BIRT", "DEAT", "FAMC", "FAMS", "MARR", "HUSB", "WIFE", "CHIL", "DIV"],
                2: ["DATE"]
             }
@@ -118,12 +118,23 @@ def run():
     
     for indiv in indivs:
         indiv_table.add_row(indiv.to_row())
+        indiv.print_errors()
 
     fam_table = PrettyTable()
     fam_table.field_names = Family.row_headers
 
+    #Error Check for Bigomy between families
+    for big1Fam in fams:
+        for big2Fam in fams:
+            if big1Fam.id is not big2Fam.id and big1Fam.husband == big2Fam.husband and (big1Fam.div_date is None and big2Fam.div_date is None):
+                big2Fam.bigError(big2Fam.husband)
+            if big1Fam.id is not big2Fam.id and big1Fam.wife == big2Fam.wife and (big2Fam.div_date is None and big2Fam.div_date is None):
+                big2Fam.bigError(big2Fam.wife)
+                
     for fam in fams:
         fam_table.add_row(fam.to_row())
+        fam.print_errors()
+        fam.print_anomalies()
 
     print(indiv_table)
     print(fam_table)
