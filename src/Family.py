@@ -36,7 +36,21 @@ class Family():
         self.anomalies.append("%s %s: %s: %s" %
                 (Family.anomaly_header, story, self.id, anomaly))
                 
-
+    def _check_names(self):
+        if self.husband is not None and self.children is not None:
+            temp = self.husband.name
+            temp = temp.split("/")
+            temp = temp[1]
+            for child in self.children:
+                if child.gender == "M":
+                    lastname = child.name
+                    lastname = lastname.split("/")
+                    lastname = lastname[1]
+                    if temp != lastname:
+                        self._add_anomaly("US16", "Male lastnames don't match!")            
+    def _check_siblings(self):
+        if len(self.children) > 14:
+            self._add_anomaly("US15", "Siblings not fewer then 15")
     def _check_dates(self):
         now = datetime.datetime.now()
 
