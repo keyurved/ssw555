@@ -124,6 +124,14 @@ def run():
     fam_table = PrettyTable()
     fam_table.field_names = Family.row_headers
 
+    #Error Check for Bigomy between families
+    for big1Fam in fams:
+        for big2Fam in fams:
+            if big1Fam.id is not big2Fam.id and big1Fam.husband == big2Fam.husband and (big1Fam.div_date is None and big2Fam.div_date is None):
+                big2Fam.bigError(big2Fam.husband)
+            if big1Fam.id is not big2Fam.id and big1Fam.wife == big2Fam.wife and (big2Fam.div_date is None and big2Fam.div_date is None):
+                big2Fam.bigError(big2Fam.wife)
+                
     for fam in fams:
         fam_table.add_row(fam.to_row())
         fam.print_errors()
