@@ -137,11 +137,11 @@ class Family():
                     if child.bday < self.married_date:
                         self._add_anomaly("US08", "Child %s born %s before marriage on %s" % (child.id, child.bday.strftime("%Y-%m-%d"), self.married_date.strftime("%Y-%m-%d")))
                 # Validate child birth is before parents death
-                    if not self.wife.alive and not self.husband.alive:    
-                        if child.bday > self.husband.death:
-                            self._add_error("US09", "Child %s born on %s after father's death on %s" % (child.id, child.bday.strftime('%Y-&m-%d'), self.husband.death.strftime('%Y-&m-%d')))
+                    if not self.wife.alive and child.bday > self.wife.death:
                         if child.bday > self.wife.death:
-                            self._add_error("US09", "Child %s born on %s after mother's death on %s" % (child.id, child.bday.strftime('%Y-&m-%d'), self.wife.death.strftime('%Y-&m-%d')))
+                            self._add_error("US09", "Child %s born on %s after mother's death on %s" % (child.id, child.bday.strftime('%Y-%m-%d'), self.wife.death.strftime('%Y-%m-%d')))
+                    if not self.husband.alive and child.bday > self.husband.death:
+                            self._add_error("US09", "Child %s born on %s after father's death on %s" % (child.id, child.bday.strftime('%Y-%m-%d'), self.husband.death.strftime('%Y-%m-%d')))
             
             # Validate divorce date
             if self.div_date is not None:

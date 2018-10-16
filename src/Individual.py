@@ -72,7 +72,12 @@ class Individual():
         id = info_dict['INDI']
         name = info_dict['NAME']
         gender = info_dict['SEX']
-        bday = datetime.datetime.strptime(info_dict['BIRT'], '%d %b %Y')
+
+        if 'BIRT' in info_dict.keys():
+            bday = datetime.datetime.strptime(info_dict['BIRT'], '%d %b %Y')
+        else:
+            bday = datetime.datetime.strptime('01 Jan 1900', '%d %b %Y')
+
         today = datetime.datetime.today()
         age = today.year - bday.year - ((today.month, today.day) < (bday.month, bday.day))
         families = info_dict['FAM']
