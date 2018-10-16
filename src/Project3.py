@@ -81,8 +81,9 @@ def process_file(file):
                     process_tag(level, curr_indiv, tag, arg)
                 else:
                     if level == 0 and curr_fam != {}:
-                        children = curr_fam['CHIL']
-                        curr_fam['CHIL'] = []
+                        if 'CHIL' in curr_fam.keys():
+                            children = curr_fam['CHIL']
+                            curr_fam['CHIL'] = []
 
                         for indiv in individuals:
                             if indiv.id == curr_fam['HUSB']:
