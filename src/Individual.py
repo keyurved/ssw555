@@ -86,7 +86,6 @@ class Individual():
 
     def add_child(self, child):
         self.children.append(child)
-        print(self.children)
 
     def add_children(self, children):
         for child in children:

@@ -1,5 +1,7 @@
 import sys
 import datetime 
+from collections import Counter
+from dateutil import relativedelta as rd
 
 class Family():
     row_headers = [
@@ -27,6 +29,9 @@ class Family():
     
     def validate(self):
         self._check_dates()
+
+        if len(self.children) > 0:
+            self._validate_children()
        
     def _add_error(self, story, error):
         self.errors.append("%s %s: %s: %s" % 
@@ -35,7 +40,43 @@ class Family():
     def _add_anomaly(self, story, anomaly):
         self.anomalies.append("%s %s: %s: %s" %
                 (Family.anomaly_header, story, self.id, anomaly))
+
+    def _validate_children(self):
+        child_sorted = sorted(self.children, key=lambda x: x.bday)
+        count_bdays = Counter()
+
+        for i in range(len(child_sorted)):
+            # Children born too close together
+            first = child_sorted[i]
+            for j in range(i + 1, len(child_sorted)):
+                second = child_sorted[j]
+                diff = rd.relativedelta(second.bday, first.bday)
+
+                if abs(diff.months) < 8 and abs(diff.days) > 2 and abs(diff.months) > 0:
+                    self._add_error("US13", "Children's bdays are less than 8 months and are not twins %s: %s %s: %s" \
+                                    % (first.id, first.bday.strftime("%Y-%m-%d"), second.id, second.bday.strftime("%Y-%m-%d")))
+
+            # More than 5 children on the same day
+            if len(count_bdays.keys()) == 0:
+                count_bdays[first.bday] += 1
+            else:
+                added = False
+                for key in count_bdays.keys():
+                    diff2 = rd.relativedelta(first.bday, key)
+
+                    if abs(diff2.days) <= 2 and diff2.months == 0:
+                        added = True
+                        count_bdays[key] += 1
+
+                        if count_bdays[key] == 5:
+                            self._add_error("US14", "More than 5 children born on: %s" % key.strftime("%Y-%m-%d"))
+                        break
+
+                if not added:
+                    count_bdays[first.bday] += 1
+
                 
+
 
     def _check_dates(self):
         now = datetime.datetime.now()
@@ -60,22 +101,22 @@ class Family():
                 # Marriage before death - wife
                 if not self.wife.alive and self.wife.death < self.married_date:
                     self._add_error("US05", "Married %s after wife's (%s) death on %s" % (self.married_date.strftime('%Y-%m-%d'), self.wife.id, self.wife.death.strftime('%Y-%m-%d')))
-                
+                    
                 # Marriage under 14 years old
                 if self.married_date.year - self.husband.bday.year < 14:
                     self._add_error("US10", "Under 14 at time of marriage - Birth %s: Marriage %s" % (self.husband.bday.strftime("%Y-%m-%d"), self.married_date.strftime("%Y-%m-%d")))
                 if self.married_date.year - self.wife.bday.year < 14:
                     self._add_error("US10", "Under 14 at time of marriage - Birth %s: Marriage %s" % (self.wife.bday.strftime("%Y-%m-%d"), self.married_date.strftime("%Y-%m-%d")))
-                    
+
                 for child in self.children:
                 # Validate child birth is after parents marriage
                     if child.bday < self.married_date:
                         self._add_anomaly("US08", "Child %s born %s before marriage on %s" % (child.id, child.bday.strftime("%Y-%m-%d"), self.married_date.strftime("%Y-%m-%d")))
                 # Validate child birth is before parents death
                     if not self.wife.alive and not self.husband.alive:    
-                        if child.bday > self.wife.death:
-                            self._add_error("US09", "Child %s born on %s after father's death on %s" % (child.id, child.bday.strftime('%Y-&m-%d'), self.husband.death.strftime('%Y-&m-%d')))
                         if child.bday > self.husband.death:
+                            self._add_error("US09", "Child %s born on %s after father's death on %s" % (child.id, child.bday.strftime('%Y-&m-%d'), self.husband.death.strftime('%Y-&m-%d')))
+                        if child.bday > self.wife.death:
                             self._add_error("US09", "Child %s born on %s after mother's death on %s" % (child.id, child.bday.strftime('%Y-&m-%d'), self.wife.death.strftime('%Y-&m-%d')))
                         
                         
@@ -111,8 +152,8 @@ class Family():
 
         if "CHIL" in fam_dict:
             children = fam_dict["CHIL"]
-            husband.children = children
-            wife.children = children
+            husband.add_children(children)
+            wife.add_children(children)
 
         if "DIV" in fam_dict:
             div_date = datetime.datetime.strptime(fam_dict["DIV"], '%d %b %Y')
