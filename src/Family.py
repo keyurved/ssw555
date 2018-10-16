@@ -29,8 +29,10 @@ class Family():
     
     def validate(self):
         self._check_dates()
+        self._check_names()
 
         if len(self.children) > 0:
+            self._check_siblings()
             self._validate_children()
        
     def _add_error(self, story, error):
@@ -76,6 +78,21 @@ class Family():
                     count_bdays[first.bday] += 1
 
                 
+    def _check_names(self):
+        if self.husband is not None and self.children is not None:
+            temp = self.husband.name
+            temp = temp.split("/")
+            temp = temp[1]
+            for child in self.children:
+                if child.gender == "M":
+                    lastname = child.name
+                    lastname = lastname.split("/")
+                    lastname = lastname[1]
+                    if temp != lastname:
+                        self._add_anomaly("US16", "Male lastnames don't match!")            
+    def _check_siblings(self):
+        if len(self.children) > 14:
+            self._add_anomaly("US15", "Siblings not fewer then 15")
 
 
     def _check_dates(self):
