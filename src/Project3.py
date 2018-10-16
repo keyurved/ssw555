@@ -83,7 +83,7 @@ def process_file(file):
                     if level == 0 and curr_fam != {}:
                         if 'CHIL' in curr_fam.keys():
                             children = curr_fam['CHIL']
-                            curr_fam['CHIL'] = []
+                        curr_fam['CHIL'] = []
 
                         for indiv in individuals:
                             if indiv.id == curr_fam['HUSB']:
