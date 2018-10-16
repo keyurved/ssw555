@@ -95,6 +95,13 @@ class Family():
             self._add_anomaly("US15", "Siblings not fewer then 15")
 
 
+    def _add_anomaly(self, story, anomaly):
+        self.anomalies.append("%s %s: %s: %s" %
+                (Family.anomaly_header, story, self.id, anomaly))
+        
+    #Method to add error for bigomy within the family      
+    def bigError(self,person):
+        self._add_error("US12", "Person %s cannot have another marriage without getting the first one divorced." %(person.id))
     def _check_dates(self):
         now = datetime.datetime.now()
 
@@ -118,7 +125,7 @@ class Family():
                 # Marriage before death - wife
                 if not self.wife.alive and self.wife.death < self.married_date:
                     self._add_error("US05", "Married %s after wife's (%s) death on %s" % (self.married_date.strftime('%Y-%m-%d'), self.wife.id, self.wife.death.strftime('%Y-%m-%d')))
-                    
+
                 # Marriage under 14 years old
                 if self.married_date.year - self.husband.bday.year < 14:
                     self._add_error("US10", "Under 14 at time of marriage - Birth %s: Marriage %s" % (self.husband.bday.strftime("%Y-%m-%d"), self.married_date.strftime("%Y-%m-%d")))
@@ -135,8 +142,6 @@ class Family():
                             self._add_error("US09", "Child %s born on %s after father's death on %s" % (child.id, child.bday.strftime('%Y-&m-%d'), self.husband.death.strftime('%Y-&m-%d')))
                         if child.bday > self.wife.death:
                             self._add_error("US09", "Child %s born on %s after mother's death on %s" % (child.id, child.bday.strftime('%Y-&m-%d'), self.wife.death.strftime('%Y-&m-%d')))
-                        
-                        
             
             # Validate divorce date
             if self.div_date is not None:
@@ -152,8 +157,42 @@ class Family():
                 # Divorce before marriage
                 if self.married_date is not None and self.div_date < self.married_date:
                     self._add_error("US04", "Divorced %s before married %s" % (self.div_date.strftime('%Y-%m-%d'), self.married_date.strftime('%Y-%m-%d')))
-            
                     
+                for child in self.children:
+                # Validate child birth is after parents marriage
+                    if child.bday < self.married_date:
+                        self._add_anomaly("US08", "Child %s born %s before marriage on %s" % (child.id, child.bday.strftime("%Y-%m-%d"), self.married_date.strftime("%Y-%m-%d")))
+                # Validate child birth is before parents death
+                    if not self.wife.alive and not self.husband.alive:    
+                        if child.bday > self.wife.death:
+                            self._add_error("US09", "Child %s born on %s after father's death on %s" % (child.id, child.bday.strftime('%Y-&m-%d'), self.husband.death.strftime('%Y-&m-%d')))
+                        if child.bday > self.husband.death:
+                            self._add_error("US09", "Child %s born on %s after mother's death on %s" % (child.id, child.bday.strftime('%Y-&m-%d'), self.wife.death.strftime('%Y-&m-%d')))
+                        
+            # Validate divorce date
+            if self.div_date is not None:
+                # Divorce before current date
+                if self.div_date > now:
+                    self._add_error("US01", "Divorce date %s occurs in the future" % self.div_date.strftime("%Y-%m-%d"))
+                # Divorce before death - husband
+                if not self.husband.alive and self.husband.death < self.div_date:
+                    self._add_error("US06", "Divorced %s after husband's (%s) death on %s" % (self.div_date.strftime('%Y-%m-%d'), self.husband.id, self.husband.death.strftime('%Y-%m-%d')))
+                # Divore before death - wife
+                if not self.wife.alive and self.wife.death < self.div_date:
+                    self._add_error("US06", "Divorced %s after wife's (%s) death on %s" % (self.div_date.strftime('%Y-%m-%d'), self.wife.id, self.wife.death.strftime('%Y-%m-%d')))
+                # Divorce before marriage
+                if self.married_date is not None and self.div_date < self.married_date:
+                    self._add_error("US04", "Divorced %s before married %s" % (self.div_date.strftime('%Y-%m-%d'), self.married_date.strftime('%Y-%m-%d')))
+
+        # Validate age of children compared too the age of children
+        if self.children is not None:
+            for child in self.children:
+                #Check if Father is not older than 80 years
+                if self.husband is not None and (self.husband.age - child.age) > 80:
+                    self._add_error("US12", "Father is %s years older than his child." % (self.husband.age - child.age))
+                #Check if Mother is not older than 60 years
+                if self.wife is not None and (self.wife.age - child.age) > 60:
+                    self._add_error("US11", "Mother is %s years older than her child." % (self.wife.age - child.age))
     @staticmethod
     def instance_from_dict(fam_dict):
         id = fam_dict['FAM']
