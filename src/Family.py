@@ -30,6 +30,7 @@ class Family():
     def validate(self):
         self._check_dates()
         self._check_names()
+        self._check_parents()
 
         if len(self.children) > 0:
             self._check_siblings()
@@ -43,6 +44,11 @@ class Family():
         self.anomalies.append("%s %s: %s: %s" %
                 (Family.anomaly_header, story, self.id, anomaly))
 
+    def _check_parents(self):
+        if self.husband is not None and self.husband.gender != 'M':
+            self._add_anomaly("US21", "Husband's gender is not M")
+        if self.wife is not None and self.wife.gender != 'F':
+            self._add_anomaly("US21", "Wife's gender is not F")
     def _validate_children(self):
         child_sorted = sorted(self.children, key=lambda x: x.bday)
         count_bdays = Counter()
@@ -197,6 +203,7 @@ class Family():
     def instance_from_dict(fam_dict):
         id = fam_dict['FAM']
         husband = fam_dict["HUSB"]
+
         wife = fam_dict["WIFE"]
 
         husband.add_spouse(wife)
