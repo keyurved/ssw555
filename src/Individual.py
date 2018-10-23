@@ -59,10 +59,6 @@ class Individual():
         elif abs(now.year - self.bday.year) > 150:
             self._add_error("US07", "More than 150 years old - Birth %s" % (self.bday.strftime("%Y-%m-%d")))
 
-
-        
-
-
     def print_errors(self):
         for i in self.errors:
             print(i, file=sys.stderr)

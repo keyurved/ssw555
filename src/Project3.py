@@ -34,6 +34,8 @@ def process_tag(level, curr_dict, tag, arg):
             curr_dict[tag] = arg
 
 def process_file(file):
+    indiv_ids = set()
+    fam_ids = set()
     individuals = []
     curr_indiv = {}
     families = []
@@ -59,7 +61,11 @@ def process_file(file):
 
                     if level == 0 and tag == "FAM":
                         if curr_indiv != {}:
-                            individuals.append(Individual.instance_from_dict(curr_indiv))
+                            if 'INDI' in curr_indiv.keys() and curr_indiv['INDI'] not in indiv_ids:
+                                individuals.append(Individual.instance_from_dict(curr_indiv))
+                                indiv_ids.add(curr_indiv['INDI'])
+                            else:
+                                print("ERROR: INDIVIDUAL: %s: already exists" % (curr_indiv['INDI']), file=sys.stderr)
                             curr_indiv = {}
                             fam_process = True
                 
@@ -67,7 +73,11 @@ def process_file(file):
                 if not fam_process:
                     if level == 0:
                         if curr_indiv != {}:
-                            individuals.append(Individual.instance_from_dict(curr_indiv))
+                            if 'INDI' in curr_indiv.keys() and curr_indiv['INDI'] not in indiv_ids:
+                                individuals.append(Individual.instance_from_dict(curr_indiv))
+                                indiv_ids.add(curr_indiv['INDI'])
+                            else:
+                                print("ERROR: INDIVIDUAL: US22: %s: already exists" % (curr_indiv['INDI']), file=sys.stderr)
                         if tag == "INDI":
                             curr_indiv = {'INDI': arg}
                         else:
@@ -81,19 +91,23 @@ def process_file(file):
                     process_tag(level, curr_indiv, tag, arg)
                 else:
                     if level == 0 and curr_fam != {}:
-                        if 'CHIL' in curr_fam.keys():
-                            children = curr_fam['CHIL']
-                        curr_fam['CHIL'] = []
+                        if 'FAM' in curr_fam.keys() and curr_fam['FAM'] not in fam_ids:
+                            if 'CHIL' in curr_fam.keys():
+                                children = curr_fam['CHIL']
+                            curr_fam['CHIL'] = []
 
-                        for indiv in individuals:
-                            if indiv.id == curr_fam['HUSB']:
-                                curr_fam['HUSB'] = indiv
-                            elif indiv.id == curr_fam['WIFE']:
-                                curr_fam['WIFE'] = indiv
-                            elif indiv.id in children:
-                                curr_fam['CHIL'].append(indiv)
+                            for indiv in individuals:
+                                if indiv.id == curr_fam['HUSB']:
+                                    curr_fam['HUSB'] = indiv
+                                elif indiv.id == curr_fam['WIFE']:
+                                    curr_fam['WIFE'] = indiv
+                                elif indiv.id in children:
+                                    curr_fam['CHIL'].append(indiv)
 
-                        families.append(Family.instance_from_dict(curr_fam))
+                            families.append(Family.instance_from_dict(curr_fam))
+                            fam_ids.add(curr_fam['FAM'])
+                        else:
+                            print("ERROR: FAMILY: US22: %s: already exists" % curr_fam['FAM'], file=sys.stderr)
                         if tag == "FAM":
                             curr_fam = {"FAM": arg}
                         else:
