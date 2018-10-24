@@ -59,10 +59,6 @@ class Individual():
         elif abs(now.year - self.bday.year) > 150:
             self._add_error("US07", "More than 150 years old - Birth %s" % (self.bday.strftime("%Y-%m-%d")))
 
-
-        
-
-
     def print_errors(self):
         for i in self.errors:
             print(i, file=sys.stderr)
@@ -72,7 +68,12 @@ class Individual():
         id = info_dict['INDI']
         name = info_dict['NAME']
         gender = info_dict['SEX']
-        bday = datetime.datetime.strptime(info_dict['BIRT'], '%d %b %Y')
+
+        if 'BIRT' in info_dict.keys():
+            bday = datetime.datetime.strptime(info_dict['BIRT'], '%d %b %Y')
+        else:
+            bday = datetime.datetime.strptime('01 Jan 1900', '%d %b %Y')
+
         today = datetime.datetime.today()
         age = today.year - bday.year - ((today.month, today.day) < (bday.month, bday.day))
         families = info_dict['FAM']
