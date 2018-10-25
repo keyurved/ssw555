@@ -30,6 +30,7 @@ class Family():
     def validate(self):
         self._check_dates()
         self._check_names()
+        self._check_parents()
 
         if len(self.children) > 0:
             self._check_siblings()
@@ -43,6 +44,11 @@ class Family():
         self.anomalies.append("%s %s: %s: %s" %
                 (Family.anomaly_header, story, self.id, anomaly))
 
+    def _check_parents(self):
+        if self.husband is not None and self.husband.gender != 'M':
+            self._add_anomaly("US21", "Husband's gender is not M")
+        if self.wife is not None and self.wife.gender != 'F':
+            self._add_anomaly("US21", "Wife's gender is not F")
     def _validate_children(self):
         child_sorted = sorted(self.children, key=lambda x: x.bday)
         count_bdays = Counter()
@@ -137,11 +143,11 @@ class Family():
                     if child.bday < self.married_date:
                         self._add_anomaly("US08", "Child %s born %s before marriage on %s" % (child.id, child.bday.strftime("%Y-%m-%d"), self.married_date.strftime("%Y-%m-%d")))
                 # Validate child birth is before parents death
-                    if not self.wife.alive and not self.husband.alive:    
-                        if child.bday > self.husband.death:
-                            self._add_error("US09", "Child %s born on %s after father's death on %s" % (child.id, child.bday.strftime('%Y-&m-%d'), self.husband.death.strftime('%Y-&m-%d')))
+                    if not self.wife.alive and child.bday > self.wife.death:
                         if child.bday > self.wife.death:
-                            self._add_error("US09", "Child %s born on %s after mother's death on %s" % (child.id, child.bday.strftime('%Y-&m-%d'), self.wife.death.strftime('%Y-&m-%d')))
+                            self._add_error("US09", "Child %s born on %s after mother's death on %s" % (child.id, child.bday.strftime('%Y-%m-%d'), self.wife.death.strftime('%Y-%m-%d')))
+                    if not self.husband.alive and child.bday > self.husband.death:
+                            self._add_error("US09", "Child %s born on %s after father's death on %s" % (child.id, child.bday.strftime('%Y-%m-%d'), self.husband.death.strftime('%Y-%m-%d')))
             
             # Validate divorce date
             if self.div_date is not None:
@@ -197,6 +203,7 @@ class Family():
     def instance_from_dict(fam_dict):
         id = fam_dict['FAM']
         husband = fam_dict["HUSB"]
+
         wife = fam_dict["WIFE"]
 
         husband.add_spouse(wife)
