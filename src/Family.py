@@ -31,6 +31,8 @@ class Family():
         self._check_dates()
         self._check_names()
         self._check_parents()
+        self._check_marriages()
+        self._check_marriages2()
 
         if len(self.children) > 0:
             self._check_siblings()
@@ -43,7 +45,32 @@ class Family():
     def _add_anomaly(self, story, anomaly):
         self.anomalies.append("%s %s: %s: %s" %
                 (Family.anomaly_header, story, self.id, anomaly))
-
+    def _check_marriages(self):
+        #US18 Siblings should not marry
+        if self.children is not None:
+            for child in self.children:
+                if child.wife is not None:
+                    if child.wife in self.children:
+                        self._add_anomaly("US18", "Wife cannot be your sibling")
+                if child.husband is not None:
+                    if self.husband in self.children:
+                        self._add_anomaly("US18", "Husband cannot be your sibling")
+        
+    def _check_marriages_2(self):
+    #US17 No marriages to decendents
+        compare = self.children
+        while compare is not None:
+            temp = []
+            for child in compare:
+                if self.wife is not None and child.gender == 'F':
+                    if self.wife == child:
+                        self._add_anomaly("US17", "Wife cannot be your descendent")
+                if self.husband is not None and child.gender == 'M':
+                        self._add_anomaly("US17", "Husband cannot be your descendent")
+            for child in compare:
+                temp = temp.append(child.children)                
+                compare = temp
+                
     def _check_parents(self):
         if self.husband is not None and self.husband.gender != 'M':
             self._add_anomaly("US21", "Husband's gender is not M")
