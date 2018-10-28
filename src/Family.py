@@ -34,6 +34,7 @@ class Family():
         self._check_marriages()
         self._check_marriages2()
 
+
         if len(self.children) > 0:
             self._check_siblings()
             self._validate_children()
@@ -45,32 +46,65 @@ class Family():
     def _add_anomaly(self, story, anomaly):
         self.anomalies.append("%s %s: %s: %s" %
                 (Family.anomaly_header, story, self.id, anomaly))
+                        
     def _check_marriages(self):
-        #US18 Siblings should not marry
+        #US18 Siblings should not marry 
         if self.children is not None:
             for child in self.children:
-                if child.wife is not None:
-                    if child.wife in self.children:
-                        self._add_anomaly("US18", "Wife cannot be your sibling")
-                if child.husband is not None:
-                    if self.husband in self.children:
-                        self._add_anomaly("US18", "Husband cannot be your sibling")
-        
-    def _check_marriages_2(self):
-    #US17 No marriages to decendents
-        compare = self.children
-        while compare is not None:
-            temp = []
-            for child in compare:
-                if self.wife is not None and child.gender == 'F':
-                    if self.wife == child:
-                        self._add_anomaly("US17", "Wife cannot be your descendent")
-                if self.husband is not None and child.gender == 'M':
-                        self._add_anomaly("US17", "Husband cannot be your descendent")
-            for child in compare:
-                temp = temp.append(child.children)                
-                compare = temp
-                
+                if child.spouses is not None:
+                    for spouse in child.spouses:
+                        if child.gender == 'M' and child.spouses is not None:                    
+                            self._add_anomaly("US18", "Spouse cannot be your sister")
+                        if child.gender == 'F' and child.spouses is not None:
+                            self._add_anomaly("US18", "Spouse cannot be your brother")
+    
+
+
+    # def _helper_marriages(self,temp,childrenList):
+    #     for child in temp:
+    #         childrenList.append(child)
+    #         if child.children != [] or child.children !='NA':
+    #             temp.append(child.children)
+    #             temp.remove(child)
+    #         else:
+    #             temp = temp
+    #     return temp, childrenList
+    # 
+    # def _check_marriages2(self):
+    #     #US17 No marriages to descendants
+    #     print(self)
+    #     childrenList = []
+    #     temp = self.children
+    #     while temp != []:            
+    #         self._helper_marriages(temp,childrenList)
+    #         print("hello")
+
+    
+    def _check_marriages2(self):
+        #US17 No marriages to descendants
+        childrenList = []
+        temp = self.children
+        # if self.children is not None:
+        #     while temp != []:           
+        #         for child in self.children:
+        #             print(child)
+        #             childrenList.append(child)
+        #             if child.children is not None:
+        #                 temp.append(child.children)
+        #                 temp.remove(child)
+        #             else:
+        #                 temp = temp  
+        if self.children is not None:
+            while temp != []:
+                for child in temp:
+                    childrenList.append(child)
+                    if child.children != []:
+                        #for thing in child.children:
+                        temp.append(child.children)
+                        temp.remove(child)
+                    else:
+                        temp = []               
+         
     def _check_parents(self):
         if self.husband is not None and self.husband.gender != 'M':
             self._add_anomaly("US21", "Husband's gender is not M")
@@ -128,9 +162,9 @@ class Family():
             self._add_anomaly("US15", "Siblings not fewer then 15")
 
 
-    def _add_anomaly(self, story, anomaly):
-        self.anomalies.append("%s %s: %s: %s" %
-                (Family.anomaly_header, story, self.id, anomaly))
+    # def _add_anomaly(self, story, anomaly):
+    #     self.anomalies.append("%s %s: %s: %s" %
+    #             (Family.anomaly_header, story, self.id, anomaly))
         
     #Method to add error for bigomy within the family      
     def bigError(self,person):
@@ -230,7 +264,6 @@ class Family():
     def instance_from_dict(fam_dict):
         id = fam_dict['FAM']
         husband = fam_dict["HUSB"]
-
         wife = fam_dict["WIFE"]
 
         husband.add_spouse(wife)
@@ -247,7 +280,7 @@ class Family():
 
         if "DIV" in fam_dict:
             div_date = datetime.datetime.strptime(fam_dict["DIV"], '%d %b %Y')
-
+            
         return Family(id, husband, wife, married_date, div_date=div_date, children=children)
 
     def print_anomalies(self):
