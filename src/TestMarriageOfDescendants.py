@@ -48,7 +48,7 @@ class MarriageOfSiblings(unittest.TestCase):
                 'NAME': 'A /Roberts',
                 'SEX': 'M',
                 'BIRT': '8 Jan 1900',
-                'FAM': ['F0','F2']
+                'FAM': ['F0','F2'],
                 }
         p2_dict = { 'INDI': 'I2',
                 'NAME': 'Aa /Smith',
@@ -72,7 +72,7 @@ class MarriageOfSiblings(unittest.TestCase):
                 'NAME': 'C /Banks',
                 'SEX': 'F',
                 'BIRT':'20 Mar 1952',
-                'FAM': 'F2'
+                'FAM': 'F2',
                 }                
 
         husband1 = Individual.instance_from_dict(p1_dict)
@@ -102,10 +102,11 @@ class MarriageOfSiblings(unittest.TestCase):
                 'MARR': '15 Jul 1972',
         }
 
- 
         Family.instance_from_dict(fam_dict3)
-        Family.instance_from_dict(fam_dict2)       
-        self.assertTrue(Family.instance_from_dict(fam_dict1).anomalies)
+        Family.instance_from_dict(fam_dict2)
+        Family.instance_from_dict(fam_dict1)       
+        #self.assertTrue(Individual.instance_from_dict(p1_dict).anomalies)
+        self.assertTrue(Family.instance_from_dict(fam_dict3).anomalies)
         
 
 

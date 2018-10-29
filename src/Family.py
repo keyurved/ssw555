@@ -57,54 +57,33 @@ class Family():
                             self._add_anomaly("US18", "Spouse cannot be your sister")
                         if child.gender == 'F' and child.spouses is not None:
                             self._add_anomaly("US18", "Spouse cannot be your brother")
-    
-
-
-    # def _helper_marriages(self,temp,childrenList):
-    #     for child in temp:
-    #         childrenList.append(child)
-    #         if child.children != [] or child.children !='NA':
-    #             temp.append(child.children)
-    #             temp.remove(child)
-    #         else:
-    #             temp = temp
-    #     return temp, childrenList
-    # 
-    # def _check_marriages2(self):
-    #     #US17 No marriages to descendants
-    #     print(self)
-    #     childrenList = []
-    #     temp = self.children
-    #     while temp != []:            
-    #         self._helper_marriages(temp,childrenList)
-    #         print("hello")
-
-    
+          
+  
+              
     def _check_marriages2(self):
         #US17 No marriages to descendants
         childrenList = []
         temp = self.children
-        # if self.children is not None:
-        #     while temp != []:           
-        #         for child in self.children:
-        #             print(child)
-        #             childrenList.append(child)
-        #             if child.children is not None:
-        #                 temp.append(child.children)
-        #                 temp.remove(child)
-        #             else:
-        #                 temp = temp  
         if self.children is not None:
             while temp != []:
-                for child in temp:
-                    childrenList.append(child)
-                    if child.children != []:
-                        #for thing in child.children:
-                        temp.append(child.children)
-                        temp.remove(child)
+                for group in temp:
+                    childrenList.append(group)
+                    if type(group.children)!=list:
+                        temp.append(group.children)
+                        temp.remove(group)
                     else:
-                        temp = []               
-         
+                        temp = []
+        print(childrenList)
+        print("____________________________________________________________________________________")
+        
+        for i in childrenList:
+            print(i)
+            print(self.wife)
+            print("-------Next i------")
+            if i.id == self.wife.id:
+                self._add_anomaly("US17", "Husband is a descendant")              
+        print("------End------")
+                      
     def _check_parents(self):
         if self.husband is not None and self.husband.gender != 'M':
             self._add_anomaly("US21", "Husband's gender is not M")

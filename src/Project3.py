@@ -134,6 +134,7 @@ def run():
     for indiv in indivs:
         indiv_table.add_row(indiv.to_row())
         indiv.print_errors()
+        indiv.print_anomalies()
 
     fam_table = PrettyTable()
     fam_table.field_names = Family.row_headers
