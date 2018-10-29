@@ -30,16 +30,44 @@ class Individual():
         else:
             self.spouses = spouses
         self.errors = []
+        self.anomalies = []
         self.validate()
 
     def validate(self):
         self._check_dates()
+        self._check_marriages2()
 
 
     def _add_error(self, story, error):
         self.errors.append("%s %s: %s: %s" % 
                 (Individual.error_header, story, self.id, error))
+  
+    def _add_anomaly(self, story, anomaly):
+        self.anomalies.append("%s %s: %s: %s" %
+                (Individual.anomaly_header, story, self.id, anomaly))
 
+    
+    def _check_marriages2(self):
+        #US17 No marriages to descendants
+        childrenList = []
+        temp = self.children
+        if self.children is not None:
+            while temp != []:
+                for group in temp:
+                    childrenList.append(group)
+                    if type(group.children)!=list:
+                        temp.append(group.children)
+                        temp.remove(group)
+                    else:
+                        temp = []
+        for spouse in self.spouses:
+            if spouse in childrenList:
+                print("hello")
+                self._add_anomaly("US17", "Husband is a descendant")
+           
+           
+                                    
+            
     def _check_dates(self):
         now = datetime.datetime.now()
 
@@ -62,6 +90,10 @@ class Individual():
     def print_errors(self):
         for i in self.errors:
             print(i, file=sys.stderr)
+
+    def print_anomalies(self):
+        for i in self.anomalies:
+            print(i, file=sys.stderr)            
 
     @staticmethod
     def instance_from_dict(info_dict):
