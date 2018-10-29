@@ -73,16 +73,10 @@ class Family():
                         temp.remove(group)
                     else:
                         temp = []
-        print(childrenList)
-        print("____________________________________________________________________________________")
         
         for i in childrenList:
-            print(i)
-            print(self.wife)
-            print("-------Next i------")
             if i.id == self.wife.id:
                 self._add_anomaly("US17", "Husband is a descendant")              
-        print("------End------")
                       
     def _check_parents(self):
         if self.husband is not None and self.husband.gender != 'M':
