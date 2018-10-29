@@ -73,7 +73,6 @@ class Family():
                         temp.remove(group)
                     else:
                         temp = []
-        
         for i in childrenList:
             if i.id == self.wife.id:
                 self._add_anomaly("US17", "Husband is a descendant")              
