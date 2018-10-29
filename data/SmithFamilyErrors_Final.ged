@@ -292,6 +292,43 @@
 2 _MARNM Smith
 1 SEX M
 1 FAMC @F2@
+0 @I33@ INDI
+1 NAME Testing /Siblingmarriage/
+2 GIVN Testing
+2 SURN Siblingmarriage/
+1 SEX M
+1 FAMC @F7@
+0 @I34@ INDI
+1 NAME Testing2 /Siblingmarriage2/
+2 GIVN Testing2
+2 SURN Siblingmarriage2/
+1 SEX F
+1 FAMC @F7@
+0 @I35@ INDI
+1 NAME Sib1 /Siblingmarriage/
+2 GIVN Sib1
+2 SURN Siblingmarriage/
+1 SEX M
+1 FAMC @F7@
+0 @I36@ INDI
+1 NAME Sib2 /Siblingmarriage/
+2 GIVN Sib2
+2 SURN Siblingmarriage/
+1 SEX F
+1 FAMC @F7@
+0 @F7@ FAM
+1 HUSB @I33@
+1 WIFE @I34@
+1 CHIL @I35@
+1 CHIL @I36@
+1 MARR
+2 DATE 6 FEB 1980
+1 _CURRENT Y
+0 @F8@ FAM
+1 HUSB @I35@
+1 WIFE @I36@
+1 MARR
+2 DATE 9 MAR 2018
 0 @F1@ FAM
 1 HUSB @I1@
 1 WIFE @I2@
