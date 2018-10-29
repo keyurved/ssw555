@@ -205,6 +205,24 @@
 1 BIRT
 2 DATE 2 MAR 1980
 1 FAMC @F3@
+0 @I35@ INDI
+1 NAME Invalid /Smith/
+2 GIVN Invalid
+2 SURN Smith
+2 _MARNM Smith
+1 SEX M
+1 BIRT
+2 DATE 2 MAR 1980
+1 FAMC @F3@
+0 @I39@ INDI
+1 NAME Invalid_Date /Smith/
+2 GIVN Invalid
+2 SURN Smith
+2 _MARNM Smith
+1 SEX M
+1 BIRT
+2 DATE 2 1980
+1 FAMC @F3@
 0 @I22@ INDI
 1 NAME Partner of /Test/
 2 GIVN Partner of

@@ -130,8 +130,13 @@ def run():
 
     indiv_table = PrettyTable()
     indiv_table.field_names = Individual.row_headers
-    
+    unique = set()
     for indiv in indivs:
+        temp = "NAME: "+str(indiv.name) + ", Birthday: " + str(indiv.bday)
+        if temp in unique:
+            print("ANOMALY: DUPLICATE PERSON: ", temp)
+        else:
+            unique.add(temp)
         indiv_table.add_row(indiv.to_row())
         indiv.print_errors()
         indiv.print_anomalies()

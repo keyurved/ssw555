@@ -48,8 +48,7 @@ class Family():
                 (Family.error_header, story, self.id, error))
 
     def _add_anomaly(self, story, anomaly):
-        self.anomalies.append("%s %s: %s: %s" %
-                (Family.anomaly_header, story, self.id, anomaly))
+        self.anomalies.append("%s %s: %s: %s" % (Family.anomaly_header, story, self.id, anomaly))
                         
     def _check_marriages(self):
         #US18 Siblings should not marry 
@@ -79,8 +78,8 @@ class Family():
                         temp = []
         for i in childrenList:
             if i.id == self.wife.id:
-                self._add_anomaly("US17", "Husband is a descendant")              
-                      
+                self._add_anomaly("US17", "Husband is a descendant")
+
     def _check_parents(self):
         if self.husband is not None and self.husband.gender != 'M':
             self._add_anomaly("US21", "Husband's gender is not M")
