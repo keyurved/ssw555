@@ -71,16 +71,20 @@ class Individual():
         gender = info_dict['SEX']
 
         if 'BIRT' in info_dict.keys():
-            abbrev_to_num = {"JAN": 1, "FEB": 2, "MAR": 3, "APR": 4, "MAY": 5, "JUN": 6, "JUL": 7, "AUG": 8, "SEP": 9, "OCT": 10, "NOV": 11, "DEC": 12}
-            check_valid = info_dict['BIRT']
-            check_valid = check_valid.split(" ")
-            check_valid[1] = str(abbrev_to_num[check_valid[1]])
-            check_valid = "-".join(check_valid)
-            if(US24(check_valid)):
-                pass
-            else:
-                print('Invalid Date: ', check_valid)
-            bday = datetime.datetime.strptime(info_dict['BIRT'], '%d %b %Y')
+            try:
+                abbrev_to_num = {"JAN": 1, "FEB": 2, "MAR": 3, "APR": 4, "MAY": 5, "JUN": 6, "JUL": 7, "AUG": 8, "SEP": 9, "OCT": 10, "NOV": 11, "DEC": 12}
+                check_valid = info_dict['BIRT']
+                check_valid = check_valid.split(" ")
+                check_valid[1] = str(abbrev_to_num[check_valid[1]])
+                check_valid = "-".join(check_valid)
+                if(US24(check_valid)):
+                    pass
+                else:
+                    print('Invalid Date: ', info_dict['BIRT'])
+                bday = datetime.datetime.strptime(info_dict['BIRT'], '%d %b %Y')
+            except:
+                print("ERROR: INVALID DATE")
+                bday = bday = datetime.datetime.strptime('01 Jan 1900', '%d %b %Y')
         else:
             bday = datetime.datetime.strptime('01 Jan 1900', '%d %b %Y')
 
