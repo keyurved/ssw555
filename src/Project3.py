@@ -145,9 +145,12 @@ def run():
             if big1Fam.id is not big2Fam.id and big1Fam.husband == big2Fam.husband and (big1Fam.div_date is None and big2Fam.div_date is None):
                 big2Fam.bigError(big2Fam.husband)
             if big1Fam.id is not big2Fam.id and big1Fam.wife == big2Fam.wife and (big2Fam.div_date is None and big2Fam.div_date is None):
-                big2Fam.bigError(big2Fam.wife)
-                
+                big2Fam.bigError(big2Fam.wife)            
+
     for fam in fams:
+        #Marriage Check
+        fam.marriage_check()
+        #
         fam_table.add_row(fam.to_row())
         fam.print_errors()
         fam.print_anomalies()
