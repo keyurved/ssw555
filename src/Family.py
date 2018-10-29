@@ -35,7 +35,11 @@ class Family():
         if len(self.children) > 0:
             self._check_siblings()
             self._validate_children()
-       
+            
+    def marriage_check(self):
+        self._check_first_cousin_spouse()
+        self._check_aunts_uncles()
+        
     def _add_error(self, story, error):
         self.errors.append("%s %s: %s: %s" % 
                 (Family.error_header, story, self.id, error))
@@ -49,6 +53,34 @@ class Family():
             self._add_anomaly("US21", "Husband's gender is not M")
         if self.wife is not None and self.wife.gender != 'F':
             self._add_anomaly("US21", "Wife's gender is not F")
+
+    #US19: Check for marriage between first cousins
+    def _check_first_cousin_spouse(self):
+        bad_marriages = []
+        if self.children is not None:
+            for child in self.children:
+                if child.children is not None:
+                    for grandchild in child.children:
+                        if grandchild.spouses is not None and grandchild not in bad_marriages:
+                            for spouse in grandchild.spouses:
+                                for otherparent in self.children:
+                                    if otherparent.id is not child.id:
+                                        if spouse in otherparent.children and spouse not in bad_marriages:
+                                            self._add_anomaly("US19", "Cannot marry between first cousins: " + spouse.id + ", " + grandchild.id)
+                                            bad_marriages.append(spouse)
+                                            bad_marriages.append(grandchild)
+                                            
+    #US20: Check for aunts and uncles married to their nephiews or nieces
+    def _check_aunts_uncles(self):
+        if self.children is not None:
+            for child in self.children:
+                if child.children is not None:
+                    for grandchild in child.children:
+                        if grandchild.spouses is not None:
+                            for spouse in grandchild.spouses:
+                                if spouse in self.children:
+                                    self._add_anomaly("US20", "An aunt or uncle should not marry their niece or nephiew: " + spouse.id + ", " + grandchild.id)
+                    
     def _validate_children(self):
         child_sorted = sorted(self.children, key=lambda x: x.bday)
         count_bdays = Counter()
