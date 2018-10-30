@@ -134,7 +134,7 @@ def run():
     for indiv in indivs:
         temp = "NAME: "+str(indiv.name) + ", Birthday: " + str(indiv.bday)
         if temp in unique:
-            print("ANOMALY: DUPLICATE PERSON: ", temp)
+            print("ANOMALY: US23: DUPLICATE PERSON: ", temp, file=sys.stderr)
         else:
             unique.add(temp)
         indiv_table.add_row(indiv.to_row())

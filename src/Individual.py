@@ -9,6 +9,7 @@ class Individual():
     ]
 
     error_header = "ERROR: INDIVIDUAL:"
+    anomaly_header = "ANOMALY: INDIVIDUAL:"
 
     def __init__(self, id, name, gender, bday, age, familes, alive, death=None, children=None, spouses=None):
         if '@' in id:
@@ -112,11 +113,11 @@ class Individual():
                 if(US24(check_valid)):
                     pass
                 else:
-                    print('Invalid Date: ', info_dict['BIRT'])
+                    print('Invalid Date: US24: %s' % info_dict['BIRT'], file=sys.stderr)
                 bday = datetime.datetime.strptime(info_dict['BIRT'], '%d %b %Y')
             except:
-                print("ERROR: INVALID DATE")
-                bday = bday = datetime.datetime.strptime('01 Jan 1900', '%d %b %Y')
+                print("ERROR: US24: INVALID DATE: %s" % info_dict['BIRT'], file=sys.stderr)
+                bday = datetime.datetime.strptime('01 Jan 1900', '%d %b %Y')
         else:
             bday = datetime.datetime.strptime('01 Jan 1900', '%d %b %Y')
 
