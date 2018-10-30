@@ -57,9 +57,9 @@ class Family():
             for child in self.children:
                 if child.spouses is not None:
                     for spouse in child.spouses:
-                        if child.gender == 'M' and child.spouses is not None:                    
+                        if child.gender == 'M' and child.spouses is not None:
                             self._add_anomaly("US18", "Spouse cannot be your sister")
-                        if child.gender == 'F' and child.spouses is not None:
+                        if child.gender == 'F' and child.spouses is not None:                          
                             self._add_anomaly("US18", "Spouse cannot be your brother")
           
   
@@ -76,7 +76,7 @@ class Family():
                         temp.append(group.children)
                         temp.remove(group)
                     else:
-                        temp = []
+                        temp = group.children                        
         for i in childrenList:
             if i.id == self.wife.id:
                 self._add_anomaly("US17", "Husband is a descendant")              

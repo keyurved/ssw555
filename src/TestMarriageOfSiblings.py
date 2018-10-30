@@ -60,13 +60,13 @@ class MarriageOfSiblings(unittest.TestCase):
                 'NAME': 'Pperson /One',
                 'SEX': 'F',
                 'BIRT':'23 Apr 2000',
-                'FAM': 'F0'
+                'FAM': ['F0','F1'] 
                 }
         p4_dict = { 'INDI': 'I3',
                 'NAME': 'Personn /One',
                 'SEX': 'M',
                 'BIRT':'20 Mar 2001',
-                'FAM': 'F0'
+                'FAM': ['F0','F1']
                 }                
 
         husband1 = Individual.instance_from_dict(p1_dict)
