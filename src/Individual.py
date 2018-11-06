@@ -22,6 +22,7 @@ class Individual():
         self.alive = alive
         self.families = familes
         self.death = death
+
         if children is None:
             self.children = []
         else:
@@ -29,8 +30,10 @@ class Individual():
 
         if spouses is None:
             self.spouses = []
+            self.married = False
         else:
             self.spouses = spouses
+            self.married = True
         self.errors = []
         self.anomalies = []
         self.validate()

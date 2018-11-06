@@ -16,6 +16,8 @@ class Family():
         self.id = id
         self.husband = husband
         self.wife = wife
+        self.husband.married = True
+        self.wife.married = True
         self.married_date = married_date
         self.div_date = div_date
         if children is not None:

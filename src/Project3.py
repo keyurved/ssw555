@@ -129,7 +129,12 @@ def run():
     indivs, fams = process_file(sys.argv[1])
 
     indiv_table = PrettyTable()
+    deceased_table = PrettyTable()
+    single_table = PrettyTable()
     indiv_table.field_names = Individual.row_headers
+    deceased_table.field_names = Individual.row_headers
+    single_table.field_names = Individual.row_headers
+    
     unique = set()
     for indiv in indivs:
         temp = "NAME: "+str(indiv.name) + ", Birthday: " + str(indiv.bday)
@@ -137,6 +142,10 @@ def run():
             print("ANOMALY: US23: DUPLICATE PERSON: ", temp, file=sys.stderr)
         else:
             unique.add(temp)
+        if not indiv.alive:
+            deceased_table.add_row(indiv.to_row())
+        elif not indiv.married:
+            single_table.add_row(indiv.to_row())
         indiv_table.add_row(indiv.to_row())
         indiv.print_errors()
         indiv.print_anomalies()
@@ -160,7 +169,12 @@ def run():
         fam.print_errors()
         fam.print_anomalies()
 
+    print("ALL INDIVIDUALS")
     print(indiv_table)
+    print("DECEASED INDIVIDUALS")
+    print(deceased_table)
+    print("SINGLE ALIVE INDIVIDUALS")
+    print(single_table)
     print(fam_table)
 
 
