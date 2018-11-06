@@ -28,11 +28,7 @@ def US23(fam):
 def US24(date):
     #Takes in a string and returns wether it is a valid date in the format DD-MM-YYYY
     try:
-        spl=date.split("-")
-        day = int(spl[0])
-        month = int(spl[1])
-        year = int(spl[2])
-        make_date_possible = datetime.datetime(year=year, month=month, day=day)
+        make_date_possible = datetime.datetime.strptime(date, '%d %b %Y')
     except:
         return False #If try block fails, date is invalid, return False
     return True #If try block succeeds go to here

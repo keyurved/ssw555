@@ -11,7 +11,7 @@ class TestCorrectGender(unittest.TestCase):
                 'BIRT': '28 Feb 1980',
                 'FAM': 'F0'
                 }
-        p2_dict = { 'INDI': 'I0',
+        p2_dict = { 'INDI': 'I1',
                 'NAME': 'Person /Two',
                 'SEX': 'F',
                 'BIRT': '13 Feb 1980',
@@ -35,7 +35,7 @@ class TestCorrectGender(unittest.TestCase):
                 'BIRT': '28 Feb 1980',
                 'FAM': 'F0'
                 }
-        p2_dict = { 'INDI': 'I0',
+        p2_dict = { 'INDI': 'I1',
                 'NAME': 'Person /Two',
                 'SEX': 'F',
                 'BIRT': '13 Feb 1980',
@@ -59,7 +59,7 @@ class TestCorrectGender(unittest.TestCase):
                 'BIRT': '28 Feb 1980',
                 'FAM': 'F0'
                 }
-        p2_dict = { 'INDI': 'I0',
+        p2_dict = { 'INDI': 'I1',
                 'NAME': 'Person /Two',
                 'SEX': 'M',
                 'BIRT': '13 Feb 1980',
@@ -83,7 +83,7 @@ class TestCorrectGender(unittest.TestCase):
                 'BIRT': '28 Feb 1980',
                 'FAM': 'F0'
                 }
-        p2_dict = { 'INDI': 'I0',
+        p2_dict = { 'INDI': 'I1',
                 'NAME': 'Person /Two',
                 'SEX': 'M',
                 'BIRT': '13 Feb 1980',

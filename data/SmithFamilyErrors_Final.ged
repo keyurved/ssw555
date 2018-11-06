@@ -20,7 +20,7 @@
 2 DATE TEST
 1 FAMS @F1@
 0 @I110@ INDI
-1 NAME Bob /Smith/
+1 NAME Bob2 /Smith/
 2 GIVN Bob
 2 SURN Smith
 1 SEX F
@@ -54,7 +54,7 @@
 2 _MARNM Smith
 1 SEX F
 1 BIRT
-2 DATE 8 NOV 1952
+2 DATE 8 NOV 1996
 1 FAMS @F2@
 0 @I5@ INDI
 1 NAME Leslie /Spencer/
