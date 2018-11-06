@@ -8,25 +8,25 @@ class MarriageOfSiblings(unittest.TestCase):
         p1_dict = { 'INDI': 'I0',
                 'NAME': 'Person /One',
                 'SEX': 'M',
-                'BIRT': '8 Jan 1972',
+                'BIRT': '8 Jan 1890',
                 'FAM': 'F0'
                 }
         p2_dict = { 'INDI': 'I0',
                 'NAME': 'Person /Two',
                 'SEX': 'F',
-                'BIRT': '11 Aug 1973',
+                'BIRT': '11 Aug 1891',
                 'FAM': 'F0'
                 }
         p3_dict = { 'INDI': 'I1',
                 'NAME': 'Pperson /One',
                 'SEX': 'F',
-                'BIRT':'23 Apr 2000',
+                'BIRT':'23 Apr 1920',
                 'FAM': 'F0'
                 }
         p4_dict = { 'INDI': 'I1',
                 'NAME': 'Personn /One',
                 'SEX': 'M',
-                'BIRT':'20 Mar 2001',
+                'BIRT':'20 Mar 1922',
                 'FAM': 'F0'
                 }                
 
@@ -37,11 +37,16 @@ class MarriageOfSiblings(unittest.TestCase):
         fam_dict = { 'FAM': 'F0',
                 'HUSB': husband,
                 'WIFE': wife,
-                'MARR': '15 Mar 1994',
+                'MARR': '15 Mar 1918',
                 'CHIL': [child1,child2],
         }
-
-        self.assertFalse(Family.instance_from_dict(fam_dict).anomalies)
+        fam_dict2 = {'FAM': 'F1',
+                    'HUSB':child2,
+                    'WIFE': child1,
+                    'MARR':'19 Jun 1944',
+                    }
+        Family.instance_from_dict(fam_dict2)
+        self.assertTrue(Family.instance_from_dict(fam_dict).anomalies)
     
     def test_marriage_invalid(self):
         p1_dict = { 'INDI': 'I1',
@@ -106,7 +111,7 @@ class MarriageOfSiblings(unittest.TestCase):
         Family.instance_from_dict(fam_dict2)
         Family.instance_from_dict(fam_dict1)       
         #self.assertTrue(Individual.instance_from_dict(p1_dict).anomalies)
-        self.assertFalse(Family.instance_from_dict(fam_dict3).anomalies)
+        self.assertTrue(Family.instance_from_dict(fam_dict1).anomalies)
         
 
 
