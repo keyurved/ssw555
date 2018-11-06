@@ -1,0 +1,23 @@
+0 HEAD
+1 SOUR Family Echo
+2 WWW http://www.familyecho.com/
+1 FILE My Family
+1 DATE 4 SEP 2018
+1 DEST ANSTFILE
+1 GEDC
+2 VERS 5.5.1
+2 FORM LINEAGE-LINKED
+1 SUBM @I1@
+2 NAME Bob Smith
+1 SUBN
+1 CHAR UTF-8
+0 @I1@ INDI
+1 NAME Bob /Smith/
+2 GIVN Bob
+2 SURN Smith
+2 _MARNM Smith
+1 SEX M
+1 BIRT
+2 DATE 21 APR 1926
+1 FAMS @F1@
+0 TRLR

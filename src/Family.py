@@ -124,7 +124,7 @@ class Family():
                 second = child_sorted[j]
                 diff = rd.relativedelta(second.bday, first.bday)
 
-                if abs(diff.months) < 8 and abs(diff.days) > 2 and abs(diff.months) > 0:
+                if abs(diff.months) < 8 and abs(diff.days) > 2 and abs(diff.months) >= 0:
                     self._add_error("US13", "Children's bdays are less than 8 months and are not twins %s: %s %s: %s" \
                                     % (first.id, first.bday.strftime("%Y-%m-%d"), second.id, second.bday.strftime("%Y-%m-%d")))
 
@@ -136,7 +136,7 @@ class Family():
                 for key in count_bdays.keys():
                     diff2 = rd.relativedelta(first.bday, key)
 
-                    if abs(diff2.days) <= 2 and diff2.months == 0:
+                    if abs(diff2.days) <= 2 and diff2.months == 0 and diff2.years == 0:
                         added = True
                         count_bdays[key] += 1
 
@@ -271,8 +271,11 @@ class Family():
 
         husband.add_spouse(wife)
         wife.add_spouse(husband)
+        married_date = datetime.datetime.strptime('1 JAN 1980', '%d %b %Y')
 
-        married_date = datetime.datetime.strptime(fam_dict["MARR"], '%d %b %Y')
+        if 'MARR' in fam_dict:
+            married_date = datetime.datetime.strptime(fam_dict["MARR"], '%d %b %Y')
+
         children = [] 
         div_date = None
 

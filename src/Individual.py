@@ -9,6 +9,7 @@ class Individual():
     ]
 
     error_header = "ERROR: INDIVIDUAL:"
+    anomaly_header = "ANOMALY: INDIVIDUAL:"
 
     def __init__(self, id, name, gender, bday, age, familes, alive, death=None, children=None, spouses=None):
         if '@' in id:
@@ -21,6 +22,7 @@ class Individual():
         self.alive = alive
         self.families = familes
         self.death = death
+
         if children is None:
             self.children = []
         else:
@@ -101,22 +103,22 @@ class Individual():
         id = info_dict['INDI']
         name = info_dict['NAME']
         gender = info_dict['SEX']
+        bday = datetime.datetime.strptime('01 Jan 1900', '%d %b %Y')
 
         if 'BIRT' in info_dict.keys():
             try:
-                abbrev_to_num = {"JAN": 1, "FEB": 2, "MAR": 3, "APR": 4, "MAY": 5, "JUN": 6, "JUL": 7, "AUG": 8, "SEP": 9, "OCT": 10, "NOV": 11, "DEC": 12}
-                check_valid = info_dict['BIRT']
-                check_valid = check_valid.split(" ")
-                check_valid[1] = str(abbrev_to_num[check_valid[1]])
-                check_valid = "-".join(check_valid)
-                if(US24(check_valid)):
-                    pass
+                #abbrev_to_num = {"JAN": 1, "FEB": 2, "MAR": 3, "APR": 4, "MAY": 5, "JUN": 6, "JUL": 7, "AUG": 8, "SEP": 9, "OCT": 10, "NOV": 11, "DEC": 12}
+                #check_valid = info_dict['BIRT']
+                #check_valid = check_valid.split(" ")
+                #check_valid[1] = str(abbrev_to_num[check_valid[1]])
+                #check_valid = "-".join(check_valid)
+                if(US24(info_dict['BIRT'])):
+                    bday = datetime.datetime.strptime(info_dict['BIRT'], '%d %b %Y')
                 else:
-                    print('Invalid Date: ', info_dict['BIRT'])
-                bday = datetime.datetime.strptime(info_dict['BIRT'], '%d %b %Y')
+                    print('Invalid Date: US24: %s' % info_dict['BIRT'], file=sys.stderr)
             except:
-                print("ERROR: INVALID DATE")
-                bday = bday = datetime.datetime.strptime('01 Jan 1900', '%d %b %Y')
+                print("ERROR: US24: INVALID DATE: %s" % info_dict['BIRT'], file=sys.stderr)
+                bday = datetime.datetime.strptime('01 Jan 1900', '%d %b %Y')
         else:
             bday = datetime.datetime.strptime('01 Jan 1900', '%d %b %Y')
 

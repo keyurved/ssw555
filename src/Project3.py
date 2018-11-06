@@ -79,6 +79,7 @@ def process_file(file):
                             else:
                                 print("ERROR: INDIVIDUAL: US22: %s: already exists" % (curr_indiv['INDI']), file=sys.stderr)
                         if tag == "INDI":
+                            curr_indiv = {}
                             curr_indiv = {'INDI': arg}
                         else:
                             curr_indiv = {}
@@ -129,14 +130,27 @@ def run():
     indivs, fams = process_file(sys.argv[1])
 
     indiv_table = PrettyTable()
+    deceased_table = PrettyTable()
+    married_table = PrettyTable()
     indiv_table.field_names = Individual.row_headers
+    deceased_table.field_names = Individual.row_headers
+    num_deceased = 0
+    married_table.field_names = Individual.row_headers
+    num_married = 0
+    
     unique = set()
     for indiv in indivs:
         temp = "NAME: "+str(indiv.name) + ", Birthday: " + str(indiv.bday)
         if temp in unique:
-            print("ANOMALY: DUPLICATE PERSON: ", temp)
+            print("ANOMALY: US23: DUPLICATE PERSON: ", temp, file=sys.stderr)
         else:
             unique.add(temp)
+        if not indiv.alive:
+            deceased_table.add_row(indiv.to_row())
+            num_deceased += 1
+        elif len(indiv.spouses) > 0:
+            married_table.add_row(indiv.to_row())
+            num_married += 1
         indiv_table.add_row(indiv.to_row())
         indiv.print_errors()
         indiv.print_anomalies()
@@ -160,7 +174,15 @@ def run():
         fam.print_errors()
         fam.print_anomalies()
 
+    print("ALL INDIVIDUALS")
     print(indiv_table)
+    if num_deceased > 0:
+        print("US29: DECEASED INDIVIDUALS")
+        print(deceased_table)
+    
+    if num_married > 0:
+        print("US30: MARRIED ALIVE INDIVIDUALS")
+        print(married_table)
     print(fam_table)
 
 
