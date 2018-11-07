@@ -33,6 +33,7 @@ class Family():
         self._check_parents()
         self._check_marriages()
         self._check_marriages2()
+        self._check_corr()
 
 
         if len(self.children) > 0:
@@ -49,7 +50,24 @@ class Family():
 
     def _add_anomaly(self, story, anomaly):
         self.anomalies.append("%s %s: %s: %s" % (Family.anomaly_header, story, self.id, anomaly))
+ 
                         
+    def _check_corr(self):
+        #US26 Check corresponding entries
+        if self.husband and self.wife is not None:
+            if self.husband not in self.wife.spouses:
+                self._add_error("US26", "Husband in family does not correspond to wife's spouses")
+            if self.wife not in self.husband.spouses:
+                self._add_error("US26", "Wife in family does not correspond to husbands's spouses")
+            print(self.children)    
+            for child in self.children:
+                print(self.husband.children)
+                if child not in self.husband.children or child not in self.wife.children:
+                    self._add_error("US26","Child in family does not correspond to parents' children")
+
+                                                                      
+                                                                                             
+                                                                                                                                           
     def _check_marriages(self):
         #US18 Siblings should not marry 
         if self.children is not None:
@@ -61,8 +79,7 @@ class Family():
                         if child.gender == 'F' and child.spouses is not None:                          
                             self._add_anomaly("US18", "Spouse cannot be your brother")
           
-  
-              
+       
     def _check_marriages2(self):
         #US17 No marriages to descendants
         childrenList = []
@@ -159,15 +176,24 @@ class Family():
                     lastname = lastname.split("/")
                     lastname = lastname[1]
                     if temp != lastname:
-                        self._add_anomaly("US16", "Male lastnames don't match!")            
+                        self._add_anomaly("US16", "Male lastnames don't match!") 
+         #US25 Unique first names of children in a family                           
+        list_of_names = []
+        set_of_names = []
+        if self.husband is not None and self.wife is not None:                       
+            if self.children is not None:
+                for child in self.children:
+                    child_first_name = child.name
+                    child_first_name = child_first_name.split("/")
+                    child_first_name = child_first_name[0]
+                    list_of_names.append(child_first_name)
+        set_of_names = set(list_of_names)
+        if len(list_of_names) != len(set_of_names):
+            self._add_anomaly("US25", "Cannot have identical first names in a family.")
+                  
     def _check_siblings(self):
         if len(self.children) > 14:
             self._add_anomaly("US15", "Siblings not fewer then 15")
-
-
-    # def _add_anomaly(self, story, anomaly):
-    #     self.anomalies.append("%s %s: %s: %s" %
-    #             (Family.anomaly_header, story, self.id, anomaly))
         
     #Method to add error for bigomy within the family      
     def bigError(self,person):
@@ -282,7 +308,7 @@ class Family():
         if "CHIL" in fam_dict:
             children = fam_dict["CHIL"]
             husband.add_children(children)
-            wife.add_children(children)
+            wife.add_children(children)           
 
         if "DIV" in fam_dict:
             div_date = datetime.datetime.strptime(fam_dict["DIV"], '%d %b %Y')

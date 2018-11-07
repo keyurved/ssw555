@@ -139,6 +139,7 @@ class Individual():
     def add_children(self, children):
         for child in children:
             self.add_child(child)
+            
     def add_spouse(self, sp):
         self.spouses.append(sp)
 
