@@ -123,6 +123,8 @@ class Individual():
             bday = datetime.datetime.strptime('01 Jan 1900', '%d %b %Y')
 
         today = datetime.datetime.today()
+        
+        #US27 - Displaying age of individual based on today's date.
         age = today.year - bday.year - ((today.month, today.day) < (bday.month, bday.day))
         families = info_dict['FAM']
         alive = True
