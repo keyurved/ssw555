@@ -185,6 +185,19 @@ def run():
         print(married_table)
     print(fam_table)
 
+    #US28 Listing families siblings in order by age
+    for fam in fams:
+        print("US28: SIBLINGS FROM FAMILY: " + fam.id + " LISTED BY AGE ORDER")
+        fam.sibling_sort()
+        sibling_table = PrettyTable()
+        sibling_table.field_names = Individual.row_headers
+        siblings = fam.children
+        for indiv in siblings:
+            sibling_table.add_row(indiv.to_row())
+        print(sibling_table)
+        
+    
+
 
 if __name__ == "__main__":
     run()

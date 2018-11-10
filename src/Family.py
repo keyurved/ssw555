@@ -263,6 +263,31 @@ class Family():
                 #Check if Mother is not older than 60 years
                 if self.wife is not None and (self.wife.age - child.age) > 60:
                     self._add_error("US11", "Mother is %s years older than her child." % (self.wife.age - child.age))
+
+    #US28: Method used for sorting siblings by decreasing age order
+    def sibling_sort(self):
+        high = len(self.children) - 1
+        self._quickSort(self.children, 0, high)
+        self.children.reverse()
+
+    def _quickSort(self, array, low, high):
+        if low < high:
+            pi = self._partition(array, low, high)
+
+            self._quickSort(array, low, pi-1)
+            self._quickSort(array, pi+1, high)
+
+    def _partition(self, arr, low, high):
+        i = (low-1)
+        pivot = arr[high]
+
+        for j in range(low, high):
+            if arr[j].age <= pivot.age:
+                i = i+1
+                arr[i],arr[j] = arr[j],arr[i]
+        arr[i+1],arr[high] = arr[high],arr[i+1]
+        return (i+1)
+        
     @staticmethod
     def instance_from_dict(fam_dict):
         id = fam_dict['FAM']
