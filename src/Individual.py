@@ -65,12 +65,9 @@ class Individual():
                         temp = []
         for spouse in self.spouses:
             if spouse in childrenList:
-                print("hello")
                 self._add_anomaly("US17", "Husband is a descendant")
            
-           
-                                    
-            
+                    
     def _check_dates(self):
         now = datetime.datetime.now()
 

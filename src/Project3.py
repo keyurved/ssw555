@@ -2,6 +2,7 @@
 from Family import Family
 from Individual import Individual
 from prettytable import PrettyTable
+import datetime
 
 """project2.py SSW 555-WS Project 2 GEDCOM validator"""
 
@@ -132,11 +133,14 @@ def run():
     indiv_table = PrettyTable()
     deceased_table = PrettyTable()
     married_table = PrettyTable()
+    born_recently_table = PrettyTable()
     indiv_table.field_names = Individual.row_headers
     deceased_table.field_names = Individual.row_headers
     num_deceased = 0
     married_table.field_names = Individual.row_headers
     num_married = 0
+    born_recently_table.field_names = Individual.row_headers
+    count_recent = 0
     
     unique = set()
     for indiv in indivs:
@@ -151,6 +155,14 @@ def run():
         elif len(indiv.spouses) > 0:
             married_table.add_row(indiv.to_row())
             num_married += 1
+            
+        #US35 List recent births
+        now = datetime.datetime.now()       
+        num_days = ((now-indiv.bday).days)
+        if num_days <= 30:
+            born_recently_table.add_row(indiv.to_row())
+            count_recent = count_recent + 1
+        
         indiv_table.add_row(indiv.to_row())
         indiv.print_errors()
         indiv.print_anomalies()
@@ -169,11 +181,11 @@ def run():
     for fam in fams:
         #Marriage Check
         fam.marriage_check()
-        #
         fam_table.add_row(fam.to_row())
         fam.print_errors()
         fam.print_anomalies()
-
+        
+    
     print("ALL INDIVIDUALS")
     print(indiv_table)
     if num_deceased > 0:
@@ -184,6 +196,10 @@ def run():
         print("US30: MARRIED ALIVE INDIVIDUALS")
         print(married_table)
     print(fam_table)
+    if count_recent > 0:
+        print("BORN IN THE PAST 30 DAYS")
+        print(born_recently_table)
+
 
 
 if __name__ == "__main__":

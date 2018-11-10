@@ -33,8 +33,6 @@ class Family():
         self._check_parents()
         self._check_marriages()
         self._check_marriages2()
-        self._check_corr()
-
 
         if len(self.children) > 0:
             self._check_siblings()
@@ -52,20 +50,20 @@ class Family():
         self.anomalies.append("%s %s: %s: %s" % (Family.anomaly_header, story, self.id, anomaly))
  
                         
-    def _check_corr(self):
-        #US26 Check corresponding entries
-        if self.husband and self.wife is not None:
-            if self.husband not in self.wife.spouses:
-                self._add_error("US26", "Husband in family does not correspond to wife's spouses")
-            if self.wife not in self.husband.spouses:
-                self._add_error("US26", "Wife in family does not correspond to husbands's spouses")
-            print(self.children)    
-            for child in self.children:
-                print(self.husband.children)
-                if child not in self.husband.children or child not in self.wife.children:
-                    self._add_error("US26","Child in family does not correspond to parents' children")
+    # def _check_corr(self):
+    #     #US26 Check corresponding entries
+    #     if self.husband and self.wife is not None:
+    #         if self.husband not in self.wife.spouses:
+    #             self._add_error("US26", "Husband in family does not correspond to wife's spouses")
+    #         if self.wife not in self.husband.spouses:
+    #             self._add_error("US26", "Wife in family does not correspond to husbands's spouses")
+    #         print(self.children)    
+    #         for child in self.children:
+    #             print(self.husband.children)
+    #             if child not in self.husband.children or child not in self.wife.children:
+    #                 self._add_error("US26","Child in family does not correspond to parents' children")
 
-                                                                      
+                                                                  
                                                                                              
                                                                                                                                            
     def _check_marriages(self):
