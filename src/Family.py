@@ -79,33 +79,23 @@ class Family():
        
     def _check_marriages2(self):
         #US17 No marriages to descendants
-        print(self)
-        print(self.husband)
-        print("____________________________________________________")
         childrenList = []
-        # temp = self.children
-        # if self.children is not None:
-        #     while temp != []:
-        #         for group in temp:
-        #             childrenList.append(group)
-        #             #if type(group.children)!=list:
-        #             print(group.children)
-        #             if group.children == 'NA':
-        #                 temp.append(group.children)
-        #                 temp.remove(group)
-        #             else:
-        #                 temp = group.children                        
-        # for i in childrenList:
-        #     if i.id == self.wife.id:
-        #         self._add_anomaly("US17", "Husband is a descendant")
-        #childrenList = self.children
-        temp_children = self.children
-        for child in self.children:
-            print(child.children)
-            if child.children == []:
-                temp_children.remove(child)
-            else:
-                temp_children.append(child.children)
+        temp = self.children
+        if self.children is not None:
+            while temp != []:
+                for group in temp:
+                    childrenList.append(group)
+                    #if type(group.children)!=list:
+                    if group.children == 'NA':
+                        temp.append(group.children)
+                        temp.remove(group)
+                    else:
+                        temp = group.children                        
+        for i in childrenList:
+            if i.id == self.wife.id:
+                self._add_anomaly("US17", "Husband is a descendant")
+
+
                 
         
 
