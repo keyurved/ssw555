@@ -33,6 +33,8 @@ class Family():
         self._check_parents()
         self._check_marriages()
         self._check_marriages2()
+        self._check_siblings()
+        self._check_anniversary()
 
 
         if len(self.children) > 0:
@@ -49,6 +51,14 @@ class Family():
 
     def _add_anomaly(self, story, anomaly):
         self.anomalies.append("%s %s: %s: %s" % (Family.anomaly_header, story, self.id, anomaly))
+    
+    def _check_anniversary(self):
+        married_date_in = self.married_date
+        curr_year = datetime.datetime.now().year
+        married_date_in = married_date_in.replace(year=curr_year)
+        check = married_date_in - datetime.datetime.now()
+        if check.days<30 and check.days>0:
+            print("US32: "+self.id+" Upcoming anniversary on: "+str(self.married_date))
                         
     def _check_marriages(self):
         #US18 Siblings should not marry 

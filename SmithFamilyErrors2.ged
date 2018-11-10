@@ -11,6 +11,96 @@
 2 NAME Bob Smith
 1 SUBN
 1 CHAR UTF-8
+0 @I500@ INDI
+1 NAME Child31 /Smith/
+2 GIVN Child3
+2 SURN Smith
+2 _MARNM Smith
+1 SEX M
+1 BIRT
+2 DATE 1 FEB 1995
+1 FAMC @F2@
+0 @I501@ INDI
+1 NAME Child3sadf /Smith/
+2 GIVN Child3
+2 SURN Smith
+2 _MARNM Smith
+1 SEX M
+1 BIRT
+2 DATE 1 FEB 1995
+1 FAMC @F2@
+0 @I502@ INDI
+1 NAME Childasdfas3 /Smith/
+2 GIVN Childsadf3
+2 SURN Smith
+2 _MARNM Smith
+1 SEX M
+1 BIRT
+2 DATE 1 FEB 1995
+1 FAMC @F2@
+0 @I503@ INDI
+1 NAME Chilasdfadsfffd3 /Smith/
+2 GIVN Child3
+2 SURN Smith
+2 _MARNM Smith
+1 SEX M
+1 BIRT
+2 DATE 1 FEB 1995
+1 FAMC @F2@
+0 @I503@ INDI
+1 NAME Child3zcx /Smith/
+2 GIVN Child3
+2 SURN Smith
+2 _MARNM Smith
+1 SEX M
+1 BIRT
+2 DATE 1 FEB 1995
+1 FAMC @F2@
+0 @I504@ INDI
+1 NAME Childxczvgfd3 /Smith/
+2 GIVN Child3
+2 SURN Smith
+2 _MARNM Smith
+1 SEX M
+1 BIRT
+2 DATE 1 FEB 1995
+1 FAMC @F2@
+0 @I505@ INDI
+1 NAME Childxcvxc3 /Smith/
+2 GIVN Child3
+2 SURN Smith
+2 _MARNM Smith
+1 SEX M
+1 BIRT
+2 DATE 1 FEB 1995
+1 FAMC @F2@
+0 @I506@ INDI
+1 NAME Chilsdfadgd3 /Smith/
+2 GIVN Child3
+2 SURN Smith
+2 _MARNM Smith
+1 SEX M
+1 BIRT
+2 DATE 1 FEB 1995
+1 FAMC @F2@
+0 @I507@ INDI
+1 NAME Chigsdfgsdld3 /Smith/
+2 GIVN Child3
+2 SURN Smith
+2 _MARNM Smith
+1 SEX M
+1 BIRT
+2 DATE 1 FEB 1995
+1 FAMC @F2@
+0 @I508@ INDI
+1 NAME Csdfgsdfghild3 /Smith/
+2 GIVN Child3
+2 SURN Smith
+2 _MARNM Smith
+1 SEX M
+1 BIRT
+2 DATE 23 NOV 1995
+1 FAMC @F2@
 0 @I1@ INDI
 1 NAME Bob /Smith/
 2 GIVN Bob
@@ -151,6 +241,15 @@
 1 BIRT
 2 DATE 1 FEB 1995
 1 FAMC @F2@
+0 @I71@ INDI
+1 NAME Child3 /Smith/
+2 GIVN Child3
+2 SURN Smith
+2 _MARNM Smith
+1 SEX M
+1 BIRT
+2 DATE 1 FEB
+1 FAMC @F2@
 0 @I16@ INDI
 1 NAME Child 4 /Smith/
 2 GIVN Child 4
@@ -252,6 +351,15 @@
 1 CHIL @I17@
 1 CHIL @I19@
 1 CHIL @I20@
+1 CHIL @I500@
+1 CHIL @I501@
+1 CHIL @I502@
+1 CHIL @I503@
+1 CHIL @I504@
+1 CHIL @I505@
+1 CHIL @I506@
+1 CHIL @I507@
+1 CHIL @I508@
 1 MARR
 2 DATE 3 MAR 1992
 2 PLAC London

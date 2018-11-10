@@ -39,6 +39,7 @@ class Individual():
     def validate(self):
         self._check_dates()
         self._check_marriages2()
+        self._check_birthday_coming()
 
 
     def _add_error(self, story, error):
@@ -49,7 +50,13 @@ class Individual():
         self.anomalies.append("%s %s: %s: %s" %
                 (Individual.anomaly_header, story, self.id, anomaly))
 
-    
+    def _check_birthday_coming(self):
+        bday_in = self.bday
+        curr_year = datetime.datetime.now().year
+        bday_in = bday_in.replace(year=curr_year, month=bday_in.month, day=bday_in.day)
+        check = bday_in - datetime.datetime.now()
+        if check.days<30 and check.days>0:
+            print("US31: "+self.id+" Upcoming birthday on: "+str(self.bday))
     def _check_marriages2(self):
         #US17 No marriages to descendants
         childrenList = []

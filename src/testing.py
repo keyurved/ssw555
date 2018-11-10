@@ -6,13 +6,13 @@ from user_stories import *
 
 class TestUS24(unittest.TestCase):
     def test_valid_date_1(self):
-        self.assertEqual(US24("77-25-1231"), False)
+        self.assertEqual(US24("1 02 1995"), False)
         return
     def test_valid_date_2(self):
         self.assertEqual(US24("abad"), False)
         return
     def test_valid_date_3(self):
-        self.assertEqual(US24("01-01-1990"), True)
+        self.assertEqual(US24("1 FEB 1995"), True)
         return
     def test_valid_date_4(self):
         self.assertEqual(US24("00-00-0000"), False)
@@ -42,3 +42,19 @@ class TestUS23(unittest.TestCase):
         info = [["Jane Doe", "03-12-1993"], ["Bora Bibe", "03-03-1992"], ["Jane Doe", "03-12-1893"], ["Ray Layland", "12-12-1990"]]
         self.assertEqual(US23(info), True)
         return
+
+class TestUS31(unittest.TestCase):
+    def test_coming_up(self):
+        date = datetime.datetime(1993, 11, 29)
+        self.assertEqual(US31(date), True)
+    def test_not_coming_up(self):
+        date = datetime.datetime(1997, 8, 21)
+        self.assertEqual(US31(date), False)
+
+class TestUS32(unittest.TestCase):
+    def test_coming_up(self):
+        date = datetime.datetime(1993, 11, 29)
+        self.assertEqual(US31(date), True)
+    def test_not_coming_up(self):
+        date = datetime.datetime(1997, 8, 21)
+        self.assertEqual(US31(date), False)
