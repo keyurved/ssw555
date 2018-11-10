@@ -50,9 +50,7 @@ class Family():
 
     def _add_anomaly(self, story, anomaly):
         self.anomalies.append("%s %s: %s: %s" % (Family.anomaly_header, story, self.id, anomaly))
-<<<<<<< HEAD
- 
-=======
+
     
     def _check_anniversary(self):
         married_date_in = self.married_date
@@ -61,38 +59,55 @@ class Family():
         check = married_date_in - datetime.datetime.now()
         if check.days<30 and check.days>0:
             print("US32: "+self.id+" Upcoming anniversary on: "+str(self.married_date))
->>>>>>> b2d4cef6de2bf06edfd5b5a4a722abc8d34a41fd
-                                                                                       
-                                                                                             
+
+                                                                                                                                                                                
                                                                                                                                            
     def _check_marriages(self):
         #US18 Siblings should not marry 
+        #US17 Descendants should not marry
         if self.children is not None:
             for child in self.children:
                 if child.spouses is not None:
                     for spouse in child.spouses:
                         if child.gender == 'M' and child.spouses is not None:
                             self._add_anomaly("US18", "Spouse cannot be your sister")
+                            self._add_anomaly("US17", "Spouse cannot be your descendant")                            
                         if child.gender == 'F' and child.spouses is not None:                          
                             self._add_anomaly("US18", "Spouse cannot be your brother")
+                            self._add_anomaly("US17", "Spouse cannot be your descendant")                            
           
        
     def _check_marriages2(self):
         #US17 No marriages to descendants
+        print(self)
+        print(self.husband)
+        print("____________________________________________________")
         childrenList = []
-        temp = self.children
-        if self.children is not None:
-            while temp != []:
-                for group in temp:
-                    childrenList.append(group)
-                    if type(group.children)!=list:
-                        temp.append(group.children)
-                        temp.remove(group)
-                    else:
-                        temp = group.children                        
-        for i in childrenList:
-            if i.id == self.wife.id:
-                self._add_anomaly("US17", "Husband is a descendant")
+        # temp = self.children
+        # if self.children is not None:
+        #     while temp != []:
+        #         for group in temp:
+        #             childrenList.append(group)
+        #             #if type(group.children)!=list:
+        #             print(group.children)
+        #             if group.children == 'NA':
+        #                 temp.append(group.children)
+        #                 temp.remove(group)
+        #             else:
+        #                 temp = group.children                        
+        # for i in childrenList:
+        #     if i.id == self.wife.id:
+        #         self._add_anomaly("US17", "Husband is a descendant")
+        #childrenList = self.children
+        temp_children = self.children
+        for child in self.children:
+            print(child.children)
+            if child.children == []:
+                temp_children.remove(child)
+            else:
+                temp_children.append(child.children)
+                
+        
 
     def _check_parents(self):
         if self.husband is not None and self.husband.gender != 'M':
