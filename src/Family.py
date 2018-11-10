@@ -33,6 +33,8 @@ class Family():
         self._check_parents()
         self._check_marriages()
         self._check_marriages2()
+        self._check_siblings()
+        self._check_anniversary()
 
         if len(self.children) > 0:
             self._check_siblings()
@@ -48,22 +50,19 @@ class Family():
 
     def _add_anomaly(self, story, anomaly):
         self.anomalies.append("%s %s: %s: %s" % (Family.anomaly_header, story, self.id, anomaly))
+<<<<<<< HEAD
  
-                        
-    # def _check_corr(self):
-    #     #US26 Check corresponding entries
-    #     if self.husband and self.wife is not None:
-    #         if self.husband not in self.wife.spouses:
-    #             self._add_error("US26", "Husband in family does not correspond to wife's spouses")
-    #         if self.wife not in self.husband.spouses:
-    #             self._add_error("US26", "Wife in family does not correspond to husbands's spouses")
-    #         print(self.children)    
-    #         for child in self.children:
-    #             print(self.husband.children)
-    #             if child not in self.husband.children or child not in self.wife.children:
-    #                 self._add_error("US26","Child in family does not correspond to parents' children")
-
-                                                                  
+=======
+    
+    def _check_anniversary(self):
+        married_date_in = self.married_date
+        curr_year = datetime.datetime.now().year
+        married_date_in = married_date_in.replace(year=curr_year)
+        check = married_date_in - datetime.datetime.now()
+        if check.days<30 and check.days>0:
+            print("US32: "+self.id+" Upcoming anniversary on: "+str(self.married_date))
+>>>>>>> b2d4cef6de2bf06edfd5b5a4a722abc8d34a41fd
+                                                                                       
                                                                                              
                                                                                                                                            
     def _check_marriages(self):
@@ -287,6 +286,31 @@ class Family():
                 #Check if Mother is not older than 60 years
                 if self.wife is not None and (self.wife.age - child.age) > 60:
                     self._add_error("US11", "Mother is %s years older than her child." % (self.wife.age - child.age))
+
+    #US28: Method used for sorting siblings by decreasing age order
+    def sibling_sort(self):
+        high = len(self.children) - 1
+        self._quickSort(self.children, 0, high)
+        self.children.reverse()
+
+    def _quickSort(self, array, low, high):
+        if low < high:
+            pi = self._partition(array, low, high)
+
+            self._quickSort(array, low, pi-1)
+            self._quickSort(array, pi+1, high)
+
+    def _partition(self, arr, low, high):
+        i = (low-1)
+        pivot = arr[high]
+
+        for j in range(low, high):
+            if arr[j].age <= pivot.age:
+                i = i+1
+                arr[i],arr[j] = arr[j],arr[i]
+        arr[i+1],arr[high] = arr[high],arr[i+1]
+        return (i+1)
+        
     @staticmethod
     def instance_from_dict(fam_dict):
         id = fam_dict['FAM']
