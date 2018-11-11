@@ -9,18 +9,20 @@ from io import StringIO
 class TestUniqueIDs(unittest.TestCase):
     def test_valid(self):
         old_stderr = sys.stderr
+        old_stdout = sys.stdout
 
-        result = StringIO()
+        result_err = StringIO()
+        
 
-        sys.stderr = result
+        sys.stderr = result_err
 
-        Project3.process_file("./data/SmithFamily.ged")
+        Project3.process_file("./data/SmithFamilyNoDeceased.ged")
 
 
         sys.stderr = old_stderr
-        print(result.getvalue())
+        print(result_err.getvalue())
 
-        self.assertTrue(len(result.getvalue()) == 0)
+        self.assertTrue(len(result_err.getvalue()) == 0)
 
     def test_invalid(self):
         old_stderr = sys.stderr
