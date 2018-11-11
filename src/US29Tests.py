@@ -8,9 +8,10 @@ import subprocess as sp
 # stderr on our test files to ensure that the error exists
 class US29Tests(unittest.TestCase):
     def test_with_deceased(self):
-        result = sp.Popen(['python', './src/Project3.py', './data/SmithFamily.ged'], stdout=sp.PIPE)
+        result = sp.Popen(['python', './src/Project3.py', './data/OneDeceased.ged'], stdout=sp.PIPE)
 
         out = str(result.communicate()[0])
+        print(out)
 
         return self.assertTrue('DECEASED INDIVIDUALS' in out) 
 
