@@ -36,6 +36,14 @@
 1 BIRT
 2 DATE 10 JUN 1800
 1 FAMS @F1@
+0 @I2345347@ INDI
+1 NAME Jane /Johnson/
+2 GIVN Jane
+2 SURN Johnson
+2 _MARNM Smith
+1 SEX M
+1 BIRT
+2 DATE 10 JUN 1800
 0 @I3@ INDI
 1 NAME Charles /Smith/
 2 GIVN Charles

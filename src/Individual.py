@@ -130,7 +130,10 @@ class Individual():
         
         #US27 - Displaying age of individual based on today's date.
         age = today.year - bday.year - ((today.month, today.day) < (bday.month, bday.day))
-        families = info_dict['FAM']
+        if 'FAM' in info_dict:
+            families = info_dict['FAM']
+        else:
+            families=[]
         alive = True
         death = None
 
