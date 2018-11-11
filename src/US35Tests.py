@@ -8,7 +8,7 @@ import subprocess as sp
 # stderr on our test files to ensure that the error exists
 class US35Tests(unittest.TestCase):
     def test_with_recently_born(self):
-        result = sp.Popen(['python', './src/Project3.py', './data/SmithFamily.ged'], stdout=sp.PIPE)
+        result = sp.Popen(['python', './src/Project3.py', './data/SmithFamilyErrors_Final.ged'], stdout=sp.PIPE)
 
         out = str(result.communicate()[0])
 
