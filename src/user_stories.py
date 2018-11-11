@@ -24,7 +24,6 @@ def US23(fam):
     return True
             
 
-
 def US24(date):
     #Takes in a string and returns wether it is a valid date in the format DD-MM-YYYY
     try:
@@ -49,3 +48,18 @@ def US32(date):
     if check.days<30 and check.days>0:
         return True
     return False
+
+def US15(siblings):
+    if len(siblings)<14:
+        return True
+    return False
+
+def US16(male_names):
+    if len(male_names)<2:
+        return True
+    first_male_name = male_names[0].split()[1]
+    for name in male_names:
+        temp = name.split()[1]
+        if temp != first_male_name:
+            return False
+    return True
