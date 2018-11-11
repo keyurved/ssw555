@@ -11,7 +11,6 @@ class US29Tests(unittest.TestCase):
         result = sp.Popen(['python', './src/Project3.py', './data/OneDeceased.ged'], stdout=sp.PIPE)
 
         out = str(result.communicate()[0])
-        print(out)
 
         return self.assertTrue('DECEASED INDIVIDUALS' in out) 
 
